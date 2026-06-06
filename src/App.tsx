@@ -825,7 +825,7 @@ export default function App() {
 
   if (isSystemInitialized === null) {
     return (
-      <div id="practika-loader" className="min-h-screen bg-[#faf5ff] flex items-center justify-center">
+      <div id="practika-loader" className="min-h-screen bg-[#faf7f5] flex items-center justify-center">
         <div className="text-center space-y-3">
           <div className="w-10 h-10 border-4 border-practika border-t-transparent rounded-full animate-spin mx-auto"></div>
           <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Iniciando Servidor local...</p>
@@ -837,7 +837,7 @@ export default function App() {
   // If client is not configured/registered, they must sign up or login first
   if (activeClient === null) {
     return (
-      <div id="practika-first-time-setup" className="min-h-screen bg-[#faf5ff] flex items-center justify-center p-4">
+      <div id="practika-first-time-setup" className="min-h-screen bg-[#faf7f5] flex items-center justify-center p-4">
         <div className="bg-white border border-slate-200 w-full max-w-md rounded-[2.5rem] shadow-2xl p-8 space-y-6 text-slate-800 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-full -translate-y-8 translate-x-8"></div>
           
@@ -1132,7 +1132,7 @@ export default function App() {
       </header>
 
       {/* SUB-HEADER OR ALERT LOGS OF THE COMMUNITY PLATFORM COOPERATIVE */}
-      <div className="bg-[#1a0833] text-slate-300 py-2 px-6 md:px-10 text-xs flex justify-between items-center overflow-x-auto whitespace-nowrap border-b border-orange-950/40">
+      <div className="bg-[#140603] text-slate-300 py-2 px-6 md:px-10 text-xs flex justify-between items-center overflow-x-auto whitespace-nowrap border-b border-orange-950/40">
         <div className="flex items-center gap-4">
           <span className="text-orange-400 font-black tracking-wider text-[9px] uppercase px-2 py-0.5 rounded bg-orange-500/15 border border-orange-500/20">
             PARQUESOFT META CO-OP
@@ -1416,11 +1416,11 @@ export default function App() {
                 <div className="absolute right-[-10px] bottom-[-10px] text-white/5 font-black text-8xl pointer-events-none uppercase">
                   Zero
                 </div>
-                <p className="text-[10px] text-[#e9d5ff] mb-1 uppercase font-bold tracking-widest flex items-center gap-1">
+                <p className="text-[10px] text-[#A6E1E4] mb-1 uppercase font-bold tracking-widest flex items-center gap-1">
                   <Heart className="w-3 h-3 text-red-400 fill-red-400" /> Co-Op Ahorro este mes
                 </p>
                 <p className="text-3xl font-black">18h</p>
-                <p className="text-xs text-[#f3e8ff]">de cocina y mermas a cero (Zero Waste)</p>
+                <p className="text-xs text-[#C6EBEC]">de cocina y mermas a cero (Zero Waste)</p>
               </div>
             </>
           )}
@@ -1594,7 +1594,7 @@ export default function App() {
                     setActiveRole('practiker');
                     showNotification('Iniciando estación de Operario de Planta...', 'info');
                   }}
-                  className="w-full bg-[#7c3aed]/10 hover:bg-[#7c3aed]/20 text-[#6d28d9] text-[10px] font-black py-2 rounded-xl transition duration-150 flex items-center justify-center gap-1.5 uppercase tracking-wide border border-[#7c3aed]/15 cursor-pointer"
+                  className="w-full bg-[#14b8a6]/10 hover:bg-[#14b8a6]/20 text-[#0d9488] text-[10px] font-black py-2 rounded-xl transition duration-150 flex items-center justify-center gap-1.5 uppercase tracking-wide border border-[#14b8a6]/15 cursor-pointer"
                 >
                   <ChefHat className="w-3.5 h-3.5" /> Estación Operario
                 </button>
@@ -1637,7 +1637,7 @@ export default function App() {
         </aside>
 
         {/* WORKSPACE AREA AREA */}
-        <section id="app-workspace" className="flex-1 p-6 md:p-8 bg-[#faf5ff] overflow-y-auto flex flex-col gap-6 relative">
+        <section id="app-workspace" className="flex-1 p-6 md:p-8 bg-[#faf7f5] overflow-y-auto flex flex-col gap-6 relative">
           
           {/* CLIENT VIEW FLOW */}
           {activeRole === 'cliente' && (
@@ -1931,18 +1931,18 @@ export default function App() {
               <div className="p-5 bg-gradient-to-r from-practika to-teal text-white rounded-[2.5rem] shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                   <h3 className="text-xl font-black">Centro de Operaciones Colaborativas</h3>
-                  <p className="text-xs text-[#f3e8ff] mt-0.5 leading-relaxed">
+                  <p className="text-xs text-[#C6EBEC] mt-0.5 leading-relaxed">
                     Preparación gamificada con protocolos HACCP. Alista los ingredientes usando las recetas del Chef Álvaro.
                   </p>
                 </div>
                 <div className="flex gap-2">
                   <div className="bg-white/10 px-4 py-2 rounded-xl text-center">
                     <span className="block text-lg font-black">{orders.filter(o => o.status === 'pendiente').length}</span>
-                    <span className="text-[9px] text-[#e9d5ff] uppercase">Pendientes</span>
+                    <span className="text-[9px] text-[#A6E1E4] uppercase">Pendientes</span>
                   </div>
                   <div className="bg-white/10 px-4 py-2 rounded-xl text-center">
                     <span className="block text-lg font-black">{orders.filter(o => o.status === 'preparando' && o.operatorId === selectedOperatorId).length}</span>
-                    <span className="text-[9px] text-[#e9d5ff] uppercase">En Cocina</span>
+                    <span className="text-[9px] text-[#A6E1E4] uppercase">En Cocina</span>
                   </div>
                 </div>
               </div>
@@ -2520,7 +2520,7 @@ export default function App() {
                         <span className="bg-vibrant text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full">
                           Motor Cognitivo De Compra
                         </span>
-                        <span className="text-[10px] font-bold text-[#f43f5e]">Chef AI</span>
+                        <span className="text-[10px] font-bold text-[#FF6B35]">Chef AI</span>
                       </div>
                       
                       <h4 className="text-xl font-extrabold text-practika mb-2">
@@ -2900,7 +2900,7 @@ export default function App() {
                 </div>
                 <div>
                   <h4 className="font-extrabold text-sm leading-tight">Chef Álvaro Ibañez Peluffo</h4>
-                  <p className="text-[10px] text-[#e9d5ff] uppercase tracking-wider font-semibold">Taller Directivo PRACTIKA</p>
+                  <p className="text-[10px] text-[#A6E1E4] uppercase tracking-wider font-semibold">Taller Directivo PRACTIKA</p>
                 </div>
               </div>
               <button 

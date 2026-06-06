@@ -1,103 +1,84 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
-/* ============================================================
-   PRACTIKA · Identidad visual "Berry Sunset"
-   Púrpura profundo + Rosa/Coral eléctrico + Violeta vibrante.
-   Toda la app se re-tematiza desde estos tokens (Tailwind v4).
-   ============================================================ */
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-
-  /* Tokens de marca */
-  --color-practika: #2b0b52;   /* Púrpura/berenjena profundo (primario oscuro) */
-  --color-teal: #7c3aed;       /* Violeta vibrante (secundario) */
-  --color-vibrant: #f43f5e;    /* Rosa/coral eléctrico (acento) */
-
-  /* Re-mapeo de la escala "orange-*" -> Rosa/Fucsia vibrante */
-  --color-orange-50:  #fff1f5;
-  --color-orange-100: #ffe4ec;
-  --color-orange-200: #fecdd8;
-  --color-orange-300: #fda4be;
-  --color-orange-350: #fc8aaa;
-  --color-orange-400: #fb7199;
-  --color-orange-500: #f43f5e;
-  --color-orange-600: #e11d48;
-  --color-orange-650: #d4143f;
-  --color-orange-700: #be123c;
-  --color-orange-800: #9f1239;
-  --color-orange-850: #8c0f33;
-  --color-orange-900: #831843;
-  --color-orange-950: #4c0519;
-
-  /* Re-mapeo de la escala "teal-*" -> Violeta */
-  --color-teal-50:  #f5f3ff;
-  --color-teal-100: #ede9fe;
-  --color-teal-200: #ddd6fe;
-  --color-teal-300: #c4b5fd;
-  --color-teal-400: #a78bfa;
-  --color-teal-500: #8b5cf6;
-  --color-teal-600: #7c3aed;
-  --color-teal-700: #6d28d9;
-  --color-teal-800: #5b21b6;
-  --color-teal-900: #4c1d95;
-
-  /* "amber-*" se conserva (dorado) para estados de alerta: contrasta bien */
+  --color-practika: #431407;
+  --color-teal: #ea580c;
+  --color-vibrant: #F97316;
 }
 
 @layer base {
   body {
-    @apply antialiased selection:bg-pink-100 selection:text-pink-950;
-    background-color: #faf5ff; /* lila muy claro de fondo */
+    @apply antialiased selection:bg-orange-100 selection:text-orange-950;
   }
 }
 
 @layer utilities {
-  /* Acento vibrante (rosa/coral) */
-  .bg-vibrant { background-color: #f43f5e; }
-  .text-vibrant { color: #f43f5e; }
-  .border-vibrant { border-color: #f43f5e; }
-  .hover\:border-vibrant:hover { border-color: #f43f5e; }
-  .ring-vibrant { --tw-ring-color: #f43f5e; }
-  .accent-vibrant { accent-color: #f43f5e; }
-
-  /* Primario profundo (púrpura berenjena) */
-  .text-practika { color: #2b0b52; }
-  .bg-practika { background-color: #2b0b52; }
-  .border-practika { border-color: #2b0b52; }
-
-  /* Secundario (violeta vibrante) — reemplaza al antiguo "teal" */
-  .bg-teal { background-color: #7c3aed; }
-  .text-teal { color: #7c3aed; }
-  .border-teal { border-color: #7c3aed; }
-
-  .bg-card { background-color: #ffffff; }
-
+  .bg-vibrant {
+    background-color: #F97316; /* Vibrant Orange */
+  }
+  .text-vibrant {
+    color: #F97316;
+  }
+  .border-vibrant {
+    border-color: #F97316;
+  }
+  .hover\:border-vibrant:hover {
+    border-color: #F97316;
+  }
+  .text-practika {
+    color: #431407; /* Warm deep mahogany/terracotta */
+  }
+  .bg-practika {
+    background-color: #431407;
+  }
+  .border-practika {
+    border-color: #431407;
+  }
+  .bg-card {
+    background-color: #ffffff;
+  }
+  .accent-orange {
+    color: #F97316;
+  }
+  .bg-teal {
+    background-color: #ea580c; /* Mid-dark warm orange */
+  }
+  .text-teal {
+    color: #ea580c;
+  }
+  .border-teal {
+    border-color: #ea580c;
+  }
   .glass {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(14px);
   }
-
-  /* Sombra de marca (resplandor rosa) */
   .shadow-vibrant {
-    box-shadow: 0 12px 34px -10px rgba(244, 63, 94, 0.40);
+    box-shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.25);
   }
-
-  .scrollbar-none::-webkit-scrollbar { display: none; }
-  .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in {
-  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Animación de aparición suave para tarjetas y paneles */
-@keyframes floatPop {
-  0% { opacity: 0; transform: scale(0.98) translateY(8px); }
-  100% { opacity: 1; transform: scale(1) translateY(0); }
+.animate-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
