@@ -1,0 +1,21 @@
+{
+  "name": "PRACTIKA — Alistamiento de Cocina",
+  "short_name": "PRACTIKA",
+  "description": "Economía colaborativa para el alistamiento culinario: kits porcionados, marinados y empacados al vacío.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8faf9",
+  "theme_color": "#15803d",
+  "lang": "es",
+  "categories": ["food", "shopping", "lifestyle"],
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

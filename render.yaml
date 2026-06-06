@@ -1,0 +1,34 @@
+# Blueprint de despliegue para Render (https://render.com)
+# Un solo servicio web: Express sirve la página y la API.
+services:
+  - type: web
+    name: practika
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install --prefix server
+    startCommand: node server/src/server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: CORS_ORIGIN
+        value: "*"
+      # --- Persistencia ---
+      # Por defecto usa archivo (efímero en plan free).
+      - key: STORAGE
+        value: file
+      # Para datos PERMANENTES, descomenta lo siguiente y la sección
+      # "databases" de abajo. Render inyectará la URL de conexión:
+      # - key: STORAGE
+      #   value: postgres
+      # - key: DATABASE_URL
+      #   fromDatabase:
+      #     name: practika-db
+      #     property: connectionString
+
+# Descomenta para crear una base PostgreSQL gestionada por Render:
+# databases:
+#   - name: practika-db
+#     plan: free
+#     databaseName: practika

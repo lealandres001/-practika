@@ -1,0 +1,23 @@
+{
+  "name": "practika-api",
+  "version": "1.0.0",
+  "description": "API REST de PRACTIKA — economía colaborativa para el alistamiento culinario.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "seed": "node src/data/reset.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "pg": "^8.11.5"
+  },
+  "keywords": ["practika", "foodtech", "api", "express"],
+  "author": "Chef Álvaro Ibáñez Peluffo",
+  "license": "UNLICENSED"
+}

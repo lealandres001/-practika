@@ -1,0 +1,16 @@
+{
+  "name": "practika",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PRACTIKA — web + API en un solo servicio (Express sirve frontend y backend).",
+  "type": "module",
+  "scripts": {
+    "build": "npm install --prefix server",
+    "start": "node server/src/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "author": "Chef Álvaro Ibáñez Peluffo",
+  "license": "UNLICENSED"
+}
