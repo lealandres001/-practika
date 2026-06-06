@@ -1,16 +1,11 @@
-# Sistema
-.DS_Store
-Thumbs.db
-
-# Editores
-.vscode/
-.idea/
-
-# Logs
-*.log
-npm-debug.log*
-
-# Dependencias (por si se agrega backend más adelante)
 node_modules/
-__pycache__/
-.env
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Base de datos de usuarios (se crea en runtime)
+users_db.json

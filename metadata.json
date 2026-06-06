@@ -1,0 +1,8 @@
+{
+  "name": "Remix: PRACTIKA",
+  "description": "Plataforma de Economía Colaborativa para el Alistamiento Culinario al Vacío - Fase MVP",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

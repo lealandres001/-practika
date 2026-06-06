@@ -1,102 +1,13 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PRACTIKA — Alistamiento de Cocina</title>
-  <meta name="description" content="PRACTIKA: economía colaborativa para el alistamiento culinario. Ahorra tiempo con kits porcionados, marinados y empacados al vacío." />
-
-  <!-- PWA / instalable -->
-  <link rel="manifest" href="manifest.webmanifest" />
-  <meta name="theme-color" content="#15803d" />
-  <link rel="icon" type="image/svg+xml" href="assets/icon.svg" />
-  <link rel="apple-touch-icon" href="assets/icon.svg" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="PRACTIKA" />
-  <meta name="mobile-web-app-capable" content="yes" />
-
-  <!-- SEO / social -->
-  <meta property="og:title" content="PRACTIKA — Alistamiento de Cocina" />
-  <meta property="og:description" content="Recibe kits de cocina porcionados, marinados y empacados al vacío. Suscríbete y ahorra tiempo cada semana." />
-  <meta property="og:type" content="website" />
-  <meta name="robots" content="index, follow" />
-
-  <link rel="stylesheet" href="assets/css/styles.css" />
-</head>
-<body>
-  <!-- ============ HEADER ============ -->
-  <header class="app-header">
-    <div class="brand" data-nav="catalog">
-      <span class="brand-mark">🍳</span>
-      <div>
-        <strong>PRACTIKA</strong>
-        <small>Alistamiento de cocina</small>
-      </div>
-    </div>
-
-    <nav class="main-nav" id="role-nav" aria-label="Navegación principal"></nav>
-
-    <div class="header-actions">
-      <span id="conn-badge" class="conn-badge" title="Estado de conexión">● Local</span>
-      <button class="btn btn-ghost btn-sm" id="install-btn" hidden>⬇️ Instalar app</button>
-      <button class="btn-cart" data-nav="checkout" aria-label="Ver carrito">
-        🛒 <span class="cart-count" id="cart-count">0</span>
-      </button>
-      <select id="role-switcher" class="role-switcher" aria-label="Cambiar rol">
-        <option value="cliente">👤 Cliente</option>
-        <option value="operador">👨‍🍳 Operador</option>
-        <option value="admin">🛠️ Administrador</option>
-      </select>
-    </div>
-  </header>
-
-  <!-- ============ MAIN ============ -->
-  <main id="view" class="view" aria-live="polite"></main>
-
-  <!-- ============ TOAST ============ -->
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <!-- ============ FOOTER ============ -->
-  <footer class="app-footer">
-    <p>PRACTIKA — MVP Fase 1 · Economía colaborativa para el alistamiento culinario</p>
-    <p class="muted">Respaldado metodológicamente por ParqueSoft Meta · Demo local (datos en tu navegador)</p>
-  </footer>
-
-  <!-- ============ SCRIPTS (orden de carga = capas) ============ -->
-  <!-- Datos / seed -->
-  <script src="js/data/seed.js"></script>
-  <!-- Núcleo -->
-  <script src="js/core/store.js"></script>
-  <script src="js/core/state.js"></script>
-  <script src="js/core/format.js"></script>
-  <script src="js/core/api.js"></script>
-  <script src="js/core/gateway.js"></script>
-  <!-- Servicios (lógica de negocio) -->
-  <script src="js/services/catalog.service.js"></script>
-  <script src="js/services/cart.service.js"></script>
-  <script src="js/services/routing.service.js"></script>
-  <script src="js/services/order.service.js"></script>
-  <script src="js/services/metrics.service.js"></script>
-  <script src="js/services/prediction.service.js"></script>
-  <!-- UI -->
-  <script src="js/ui/components.js"></script>
-  <script src="js/ui/catalog.view.js"></script>
-  <script src="js/ui/checkout.view.js"></script>
-  <script src="js/ui/academy.view.js"></script>
-  <script src="js/ui/operator.view.js"></script>
-  <script src="js/ui/admin.view.js"></script>
-  <!-- App -->
-  <script src="js/app.js"></script>
-
-  <!-- Registro del Service Worker (solo cuando está hospedada, no en file://) -->
-  <script>
-    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("sw.js").catch(function (e) {
-          console.warn("SW no registrado:", e);
-        });
-      });
-    }
-  </script>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Google AI Studio App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>
+

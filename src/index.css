@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-practika: #431407;
+  --color-teal: #ea580c;
+  --color-vibrant: #F97316;
+}
+
+@layer base {
+  body {
+    @apply antialiased selection:bg-orange-100 selection:text-orange-950;
+  }
+}
+
+@layer utilities {
+  .bg-vibrant {
+    background-color: #F97316; /* Vibrant Orange */
+  }
+  .text-vibrant {
+    color: #F97316;
+  }
+  .border-vibrant {
+    border-color: #F97316;
+  }
+  .hover\:border-vibrant:hover {
+    border-color: #F97316;
+  }
+  .text-practika {
+    color: #431407; /* Warm deep mahogany/terracotta */
+  }
+  .bg-practika {
+    background-color: #431407;
+  }
+  .border-practika {
+    border-color: #431407;
+  }
+  .bg-card {
+    background-color: #ffffff;
+  }
+  .accent-orange {
+    color: #F97316;
+  }
+  .bg-teal {
+    background-color: #ea580c; /* Mid-dark warm orange */
+  }
+  .text-teal {
+    color: #ea580c;
+  }
+  .border-teal {
+    border-color: #ea580c;
+  }
+  .glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(14px);
+  }
+  .shadow-vibrant {
+    box-shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.25);
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
