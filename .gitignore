@@ -9,3 +9,4 @@ coverage/
 
 # Base de datos de usuarios (se crea en runtime)
 users_db.json
+orders_db.json

@@ -1,0 +1,42 @@
+# PRACTIKA — Entorno de desarrollo local
+# Levanta PostgreSQL + Redis y aplica schema.sql + seed.sql automáticamente.
+#
+#   docker compose -f infra/docker-compose.yml up -d
+#
+# Postgres queda en localhost:5432  (user: practika / pass: practika / db: practika)
+# Redis     queda en localhost:6379
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: practika-postgres
+    environment:
+      POSTGRES_USER: practika
+      POSTGRES_PASSWORD: practika
+      POSTGRES_DB: practika
+    ports:
+      - "5432:5432"
+    volumes:
+      - practika_pgdata:/var/lib/postgresql/data
+      # Scripts en docker-entrypoint-initdb.d se ejecutan en orden alfabético
+      # solo la PRIMERA vez que se crea el volumen.
+      - ../database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ../database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U practika"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: practika-redis
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - practika_redisdata:/data
+
+volumes:
+  practika_pgdata:
+  practika_redisdata:

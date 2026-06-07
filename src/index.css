@@ -4,146 +4,167 @@
 @theme {
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  --color-practika: #431407;
-  --color-teal: #ea580c;
-  --color-vibrant: #F97316;
+
+  /* ---- Paleta estilo ride-hailing (DiDi / inDriver / Yango) ---- */
+  /* Primario: negro tinta cálido (headers, botones, texto fuerte) */
+  --color-practika: #16140f;
+  /* Acento de marca: naranja vibrante (CTAs, estados activos, highlights) */
+  --color-teal: #ff6a2b;
+  --color-vibrant: #ff6a2b;
 }
 
 @layer base {
-  html {
-    /* Escala global ligeramente mayor: todo se ve más grande y legible */
-    font-size: 16.5px;
-  }
   body {
-    @apply antialiased selection:bg-orange-100 selection:text-orange-950;
-    /* Fondo cálido y suave en lugar de plano */
-    background: linear-gradient(180deg, #fff8f3 0%, #fdf4ec 100%);
-    background-attachment: fixed;
+    @apply antialiased bg-[#f6f6f7] text-[#16140f] selection:bg-orange-100 selection:text-orange-950;
   }
 }
 
 @layer utilities {
-  .bg-vibrant {
-    background-color: #F97316; /* Vibrant Orange */
-  }
-  .text-vibrant {
-    color: #F97316;
-  }
-  .border-vibrant {
-    border-color: #F97316;
-  }
-  .hover\:border-vibrant:hover {
-    border-color: #F97316;
-  }
-  .text-practika {
-    color: #431407; /* Warm deep mahogany/terracotta */
-  }
-  .bg-practika {
-    background-color: #431407;
-  }
-  .border-practika {
-    border-color: #431407;
-  }
-  .bg-card {
-    background-color: #ffffff;
-  }
-  .accent-orange {
-    color: #F97316;
-  }
-  .bg-teal {
-    background-color: #ea580c; /* Mid-dark warm orange */
-  }
-  .text-teal {
-    color: #ea580c;
-  }
-  .border-teal {
-    border-color: #ea580c;
-  }
+  /* ---- Tokens de color mapeados a las clases existentes ---- */
+  .bg-vibrant   { background-color: #ff6a2b; }
+  .text-vibrant { color: #ff6a2b; }
+  .border-vibrant { border-color: #ff6a2b; }
+  .hover\:border-vibrant:hover { border-color: #ff6a2b; }
+
+  .text-practika   { color: #16140f; }
+  .bg-practika     { background-color: #16140f; }
+  .border-practika { border-color: #16140f; }
+
+  .bg-card { background-color: #ffffff; }
+  .accent-orange { color: #ff6a2b; }
+
+  .bg-teal     { background-color: #ff6a2b; }
+  .text-teal   { color: #ff6a2b; }
+  .border-teal { border-color: #ff6a2b; }
+
   .glass {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(14px);
   }
   .shadow-vibrant {
-    box-shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.25);
+    box-shadow: 0 14px 40px -12px rgba(255, 106, 43, 0.45);
   }
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
-  }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
   .scrollbar-none {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* ============================================================
+     COMPONENTES REUTILIZABLES — look mobile-first tipo super-app
+     ============================================================ */
+
+  /* Contenedor central que simula la pantalla de un teléfono */
+  .app-phone {
+    width: 100%;
+    max-width: 460px;
+    margin-inline: auto;
+  }
+
+  /* Marco de teléfono: la app completa vive aquí, centrada sobre fondo oscuro */
+  .phone-frame {
+    width: 100%;
+    max-width: 480px;
+    margin-inline: auto;
+    min-height: 100vh;
+    background-color: #f6f6f7;
+    position: relative;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.6);
+  }
+
+  /* Barra de navegación inferior tipo super-app (solo móvil/tablet) */
+  .bottom-nav {
+    @apply sticky bottom-0 z-30 bg-white border-t border-[#efedeb]
+           flex items-stretch justify-around px-2 pt-2 pb-3 lg:hidden;
+    box-shadow: 0 -8px 30px -16px rgba(22,20,15,0.18);
+  }
+  .nav-item {
+    @apply flex flex-col items-center justify-center gap-1 flex-1 py-1
+           text-[11px] font-bold text-[#a8a29e] transition-colors cursor-pointer select-none;
+  }
+  .nav-item-on { color: #16140f; }
+  .nav-icon {
+    @apply w-11 h-7 rounded-full flex items-center justify-center transition-all;
+  }
+  .nav-item-on .nav-icon { background-color: rgba(255,106,43,0.14); color: #ff6a2b; }
+
+  /* Botón principal grande tipo píldora (CTA) */
+  .btn-pill {
+    @apply w-full inline-flex items-center justify-center gap-2 rounded-2xl px-5 py-4
+           text-[15px] font-extrabold tracking-tight transition-all duration-200
+           cursor-pointer select-none disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-pill-primary {
+    background-color: #16140f;
+    color: #ffffff;
+    box-shadow: 0 10px 24px -10px rgba(22, 20, 15, 0.55);
+  }
+  .btn-pill-primary:hover { background-color: #ff6a2b; box-shadow: 0 14px 30px -10px rgba(255,106,43,0.5); }
+
+  .btn-pill-accent {
+    background-color: #ff6a2b;
+    color: #ffffff;
+    box-shadow: 0 12px 28px -10px rgba(255, 106, 43, 0.55);
+  }
+  .btn-pill-accent:hover { filter: brightness(1.05); }
+
+  .btn-pill-ghost {
+    background-color: #ffffff;
+    color: #16140f;
+    border: 1.5px solid #e7e5e4;
+  }
+  .btn-pill-ghost:hover { border-color: #16140f; }
+
+  /* Campo de texto grande y redondeado */
+  .field-xl {
+    @apply w-full rounded-2xl bg-[#f4f4f5] border border-transparent
+           px-4 py-3.5 text-[15px] font-semibold text-[#16140f]
+           outline-none transition-all placeholder:text-[#a8a29e]
+           focus:bg-white focus:border-[#ff6a2b] focus:ring-4 focus:ring-orange-500/10;
+  }
+  .field-label {
+    @apply block text-[12px] font-bold text-[#78716c] mb-1.5 ml-1;
+  }
+
+  /* Tarjeta blanca estilo super-app */
+  .card-app {
+    @apply bg-white rounded-3xl border border-[#efedeb] shadow-[0_8px_30px_-18px_rgba(22,20,15,0.18)];
+  }
+  /* Título de sección */
+  .section-title {
+    @apply text-[18px] font-black tracking-tight text-[#16140f];
+  }
+  .section-sub {
+    @apply text-[13px] text-[#78716c] font-medium;
+  }
+  /* Chip / etiqueta pequeña */
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-3 py-1 text-[12px] font-bold;
+  }
+  .chip-accent { background-color: rgba(255,106,43,0.12); color: #c2410c; }
+  .chip-dark   { background-color: #16140f; color: #ffffff; }
+  /* Píldora de filtro (tabs de categoría) */
+  .pill-tab {
+    @apply px-4 py-2 rounded-full text-[13px] font-bold transition-all duration-200 cursor-pointer;
+  }
+  .pill-tab-on  { background-color: #16140f; color: #fff; }
+  .pill-tab-off { color: #78716c; }
+  .pill-tab-off:hover { background-color: #f4f4f5; color: #16140f; }
 }
 
+/* ---- Animaciones ---- */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
 .animate-fade-in {
   animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* ============================================================
-   PULIDO VISUAL — interfaz más bonita y fácil (paleta naranja intacta)
-   ============================================================ */
-
-/* Botones: sensación táctil y suave en toda la app */
-button {
-  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease, filter 0.2s ease;
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-button:not(:disabled):active {
-  transform: scale(0.97);
-}
-
-/* Foco accesible y bonito */
-*:focus-visible {
-  outline: 2px solid #F97316;
-  outline-offset: 2px;
-  border-radius: 8px;
-}
-
-/* Inputs y selects más amables al enfocar */
-input:focus, select:focus, textarea:focus {
-  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
-}
-
-/* Scrollbar elegante en tono naranja */
-*::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-*::-webkit-scrollbar-track {
-  background: transparent;
-}
-*::-webkit-scrollbar-thumb {
-  background: #f5b58a;
-  border-radius: 999px;
-  border: 2px solid transparent;
-  background-clip: padding-box;
-}
-*::-webkit-scrollbar-thumb:hover {
-  background: #F97316;
-  background-clip: padding-box;
-}
-
-/* Tarjetas con elevación suave al pasar el mouse (clases comunes del proyecto) */
-.rounded-3xl, .rounded-\[2\.5rem\] {
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
-}
-
-/* Aparición suave global para los contenedores de cada vista */
-#app-workspace > div {
-  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* Imágenes siempre nítidas y redondeadas por defecto en tarjetas */
-img {
-  image-rendering: auto;
+.animate-slide-up {
+  animation: slideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

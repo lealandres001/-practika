@@ -35,7 +35,9 @@ import {
   Unlock,
   Eye,
   EyeOff,
-  Shield
+  Shield,
+  Search,
+  MapPin
 } from 'lucide-react';
 
 import { 
@@ -598,7 +600,7 @@ export default function App() {
   };
 
   // --- CREDENTIALS AUTHENTICATION HANDLERS ---
-  const handlePortalLogin = (e: React.FormEvent) => {
+  const handlePortalLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError('');
 
@@ -610,32 +612,38 @@ export default function App() {
       return;
     }
 
-    if (activeRole === 'practiker') {
-      const matchedUser = users.find(u => u.username === username && u.role === 'practiker');
-      const correctPass = passwords[username];
-      
-      if (matchedUser && correctPass === password) {
+    try {
+      const res = await fetch('/api/users/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setLoginError(data.error || 'Credenciales incorrectas. Intente de nuevo.');
+        return;
+      }
+
+      const role = data.user.role;
+
+      if (activeRole === 'practiker' && role === 'practiker') {
         setIsPractikerLogged(true);
         localStorage.setItem('isPractikerLogged', 'true');
         setLoginUser('');
         setLoginPass('');
-        showNotification(`¡Acceso autorizado! Operador ${matchedUser.name} activo.`, 'success');
-      } else {
-        setLoginError('Credenciales incorrectas para el Modo Operador de Planta (Practiker). Intente de nuevo.');
-      }
-    } else if (activeRole === 'admin') {
-      const matchedUser = users.find(u => u.username === username && u.role === 'admin');
-      const correctPass = passwords[username];
-      
-      if (matchedUser && correctPass === password) {
+        showNotification(`¡Acceso autorizado! Operador ${data.user.name} activo.`, 'success');
+      } else if (activeRole === 'admin' && role === 'admin') {
         setIsAdminLogged(true);
         localStorage.setItem('isAdminLogged', 'true');
         setLoginUser('');
         setLoginPass('');
-        showNotification(`¡Acceso autorizado! Administrador ${matchedUser.name} activo.`, 'success');
+        showNotification(`¡Acceso autorizado! Administrador ${data.user.name} activo.`, 'success');
       } else {
-        setLoginError('Credenciales incorrectas para Jefe de Cocina / Caja Central. Intente de nuevo.');
+        setLoginError(`Estas credenciales no corresponden al rol de ${activeRole === 'practiker' ? 'Practiker' : 'Administrador'}.`);
       }
+    } catch (err: any) {
+      setLoginError('Error de red al iniciar sesión. Intente de nuevo.');
     }
   };
 
@@ -825,10 +833,14 @@ export default function App() {
 
   if (isSystemInitialized === null) {
     return (
-      <div id="practika-loader" className="min-h-screen bg-[#faf7f5] flex items-center justify-center">
+      <div id="practika-loader" className="min-h-screen bg-[#16140f] flex flex-col items-center justify-center gap-6">
+        <div className="w-20 h-20 bg-vibrant rounded-3xl flex items-center justify-center text-white font-black text-4xl shadow-vibrant animate-slide-up">
+          P
+        </div>
         <div className="text-center space-y-3">
-          <div className="w-10 h-10 border-4 border-practika border-t-transparent rounded-full animate-spin mx-auto"></div>
-          <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Iniciando Servidor local...</p>
+          <h1 className="text-2xl font-black text-white tracking-tight">PRACTIKA</h1>
+          <div className="w-8 h-8 border-[3px] border-vibrant border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="text-[11px] text-white/40 font-bold uppercase tracking-[0.2em]">Preparando tu cocina...</p>
         </div>
       </div>
     );
@@ -837,107 +849,105 @@ export default function App() {
   // If client is not configured/registered, they must sign up or login first
   if (activeClient === null) {
     return (
-      <div id="practika-first-time-setup" className="min-h-screen bg-[#faf7f5] flex items-center justify-center p-4">
-        <div className="bg-white border border-slate-200 w-full max-w-md rounded-[2.5rem] shadow-2xl p-8 space-y-6 text-slate-800 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-24 h-24 bg-orange-500/5 rounded-full -translate-y-8 translate-x-8"></div>
-          
-          {/* BOTÓN DE RETROCESO (CON CONTROL DE REGISTRO PREVIO) */}
-          <div className="flex justify-between items-center relative z-10 border-b border-slate-100 pb-3">
-            {localStorage.getItem('registered_client_backup') ? (
-              <button
-                type="button"
-                onClick={() => {
-                  const backup = localStorage.getItem('registered_client_backup');
-                  if (backup) {
-                    try {
-                      const client = JSON.parse(backup);
-                      setActiveClient(client);
-                      showNotification(`Regresando al menú principal: @${client.username}`, 'success');
-                    } catch (e) {}
-                  }
-                }}
-                className="flex items-center gap-1.5 text-xs font-black text-orange-700 hover:text-orange-950 bg-orange-100/60 hover:bg-orange-100 px-3.5 py-2 rounded-xl transition duration-150 cursor-pointer"
-              >
-                ⬅️ Volver al Menú Principal
-              </button>
-            ) : (
-              <div 
-                className="flex items-center gap-1.5 text-[12px] font-black text-slate-400 bg-slate-150/50 border border-slate-200 px-3 py-1.5 rounded-xl select-none"
-                title="Debe registrar una cuenta antes de acceder al menú principal"
-              >
-                🚫 Retorno Bloqueado (Falta Registro)
-              </div>
-            )}
+      <div id="practika-first-time-setup" className="min-h-screen bg-[#16140f] flex flex-col text-white relative overflow-hidden">
+        {/* Resplandores decorativos de marca */}
+        <div className="absolute -top-24 -right-16 w-80 h-80 bg-[#ff6a2b]/30 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-1/3 -left-24 w-72 h-72 bg-[#ff6a2b]/10 rounded-full blur-3xl pointer-events-none"></div>
 
-            <span className="text-[12px] text-slate-450 font-bold uppercase tracking-wider font-mono">
-              PARQUESOFT META
-            </span>
-          </div>
+        {/* ---- HERO SUPERIOR (marca) ---- */}
+        <div className="app-phone w-full px-7 pt-9 pb-6 relative z-10">
+          {localStorage.getItem('registered_client_backup') && (
+            <button
+              type="button"
+              onClick={() => {
+                const backup = localStorage.getItem('registered_client_backup');
+                if (backup) {
+                  try {
+                    const client = JSON.parse(backup);
+                    setActiveClient(client);
+                    showNotification(`Bienvenido de nuevo, @${client.username}`, 'success');
+                  } catch (e) {}
+                }
+              }}
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition cursor-pointer mb-6"
+              aria-label="Volver"
+            >
+              <span className="text-xl leading-none">‹</span>
+            </button>
+          )}
 
-          <div className="text-center relative z-10">
-            <div className="w-14 h-14 bg-practika rounded-2xl flex items-center justify-center font-black text-2xl text-white shadow-md mx-auto mb-3">
+          <div className="mt-2">
+            <div className="w-16 h-16 rounded-[1.25rem] bg-[#ff6a2b] flex items-center justify-center text-3xl font-black shadow-vibrant">
               P
             </div>
-            <h2 className="text-xl font-black text-practika">
-              {setupMode === 'register' ? 'Registro de Cliente' : 'Iniciar Sesión'}
-            </h2>
-            <p className="text-[12px] text-orange-700 font-extrabold uppercase tracking-widest mt-0.5">
-              Identidad de Operaciones PRACTIKA
-            </p>
-            <p className="text-xs text-slate-500 leading-normal mt-3">
-              {setupMode === 'register' 
-                ? 'Bienvenido a PRACTIKA. Cree su cuenta de usuario para almacenar sus datos y realizar sus pedidos de alistamiento al vacío.'
-                : 'Ingrese sus credenciales de usuario registrado de PRACTIKA para continuar.'}
+            <h1 className="text-[2.75rem] leading-none font-black tracking-tight mt-6">PRACTIKA</h1>
+            <p className="text-white/55 font-semibold mt-3 text-[15px] leading-snug max-w-[300px]">
+              Tu cocina, lista al vacío. Pídelo, recíbelo en casa y cocina en minutos.
             </p>
           </div>
+        </div>
 
-          <form onSubmit={handleFirstTimeSetup} className="space-y-4 relative z-10">
+        {/* ---- HOJA INFERIOR (formulario) ---- */}
+        <div className="mt-auto bg-white text-[#16140f] rounded-t-[2.25rem] px-7 pt-7 pb-9 app-phone w-full relative z-10 animate-slide-up shadow-[0_-24px_60px_-20px_rgba(0,0,0,0.55)]">
+          {/* Toggle segmentado Crear cuenta / Entrar */}
+          <div className="grid grid-cols-2 gap-1 bg-[#f4f4f5] rounded-2xl p-1 mb-6">
+            <button
+              type="button"
+              onClick={() => { setSetupMode('register'); setSetupError(''); }}
+              className={`rounded-xl py-2.5 text-[14px] font-extrabold transition-all cursor-pointer ${setupMode === 'register' ? 'bg-white text-[#16140f] shadow-sm' : 'text-[#78716c]'}`}
+            >
+              Crear cuenta
+            </button>
+            <button
+              type="button"
+              onClick={() => { setSetupMode('login'); setSetupError(''); }}
+              className={`rounded-xl py-2.5 text-[14px] font-extrabold transition-all cursor-pointer ${setupMode === 'login' ? 'bg-white text-[#16140f] shadow-sm' : 'text-[#78716c]'}`}
+            >
+              Entrar
+            </button>
+          </div>
+
+          <form onSubmit={handleFirstTimeSetup} className="space-y-3.5">
             {setupError && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs font-bold text-center">
-                ⚠️ {setupError}
+              <div className="p-3.5 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[13px] font-bold text-center">
+                {setupError}
               </div>
             )}
 
             {setupMode === 'register' && (
               <>
                 <div>
-                  <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
-                    Nombre Completo (Cliente)
-                  </label>
+                  <label className="field-label">Nombre completo</label>
                   <input
                     type="text"
                     placeholder="Ej. Alejandro Galindo"
                     value={setupName}
                     onChange={(e) => setSetupName(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-practika text-xs px-3.5 py-2.5 rounded-xl font-bold outline-none transition text-slate-800"
+                    className="field-xl"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
-                    Email / Correo de contacto
-                  </label>
+                  <label className="field-label">Correo electrónico</label>
                   <input
                     type="email"
-                    placeholder="Ej. sucorreo@ejemplo.com"
+                    placeholder="tucorreo@ejemplo.com"
                     value={setupEmail}
                     onChange={(e) => setSetupEmail(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-practika text-xs px-3.5 py-2.5 rounded-xl font-bold outline-none transition text-slate-800"
+                    className="field-xl"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
-                    Número de Teléfono
-                  </label>
+                  <label className="field-label">Teléfono</label>
                   <input
                     type="tel"
-                    placeholder="Ej. 3158941254"
+                    placeholder="315 894 1254"
                     value={setupPhone}
                     onChange={(e) => setSetupPhone(e.target.value.replace(/[^0-9]/g, ''))}
-                    className="w-full bg-slate-50 border border-slate-200 focus:border-practika text-xs px-3.5 py-2.5 rounded-xl font-mono font-bold outline-none transition text-slate-800"
+                    className="field-xl"
                     required
                   />
                 </div>
@@ -945,114 +955,114 @@ export default function App() {
             )}
 
             <div>
-              <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
-                Nombre de Usuario (Login / Nick)
-              </label>
+              <label className="field-label">Usuario</label>
               <input
                 type="text"
                 placeholder="Ej. lealandres007"
                 value={setupUsername}
                 onChange={(e) => setSetupUsername(e.target.value.replace(/\s+/g, ''))}
-                className="w-full bg-slate-50 border border-slate-200 focus:border-practika text-xs px-3.5 py-2.5 rounded-xl font-mono font-black text-orange-950 outline-none transition"
+                className="field-xl"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
-                Contraseña de Seguridad
-              </label>
+              <label className="field-label">Contraseña</label>
               <input
                 type="password"
-                placeholder="••••••••••••"
+                placeholder="••••••••"
                 value={setupPassword}
                 onChange={(e) => setSetupPassword(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 focus:border-practika text-xs px-3.5 py-2.5 rounded-xl font-mono font-black text-slate-800 outline-none transition"
+                className="field-xl"
                 required
               />
             </div>
 
-            <button
-              type="submit"
-              className="w-full py-3 bg-practika hover:bg-orange-600 text-white rounded-xl text-xs font-black uppercase tracking-widest transition shadow-md hover:shadow-orange-500/10 duration-150 cursor-pointer"
-            >
-              {setupMode === 'register' ? '🛠️ Registrar Mi Cuenta en SGC' : '🔑 Ingresar al Portal'}
+            <button type="submit" className="btn-pill btn-pill-accent mt-2">
+              {setupMode === 'register' ? 'Crear mi cuenta' : 'Entrar'}
+              <span className="text-lg leading-none">→</span>
             </button>
           </form>
 
-          <div className="text-center space-y-4 pt-2 relative z-10">
+          {/* Accesos sociales */}
+          <div className="flex items-center gap-3 my-5">
+            <div className="h-px bg-[#e7e5e4] flex-1"></div>
+            <span className="text-[12px] font-bold text-[#a8a29e]">o continúa con</span>
+            <div className="h-px bg-[#e7e5e4] flex-1"></div>
+          </div>
+          <div className="grid grid-cols-3 gap-3">
+            {[
+              { id: 'Google', label: 'G' },
+              { id: 'Apple', label: '' },
+              { id: 'Facebook', label: 'f' },
+            ].map((p) => (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => showNotification(`Inicio con ${p.id}: disponible muy pronto.`, 'info')}
+                className="h-12 rounded-2xl border border-[#e7e5e4] bg-white hover:border-[#16140f] flex items-center justify-center text-xl font-black transition cursor-pointer"
+                aria-label={`Continuar con ${p.id}`}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Acceso de personal autorizado (discreto) */}
+          <div className="mt-7 pt-5 border-t border-[#f4f4f5] flex items-center justify-center gap-5">
             <button
               type="button"
               onClick={() => {
-                setSetupMode(setupMode === 'register' ? 'login' : 'register');
-                setSetupError('');
+                const mockClient = {
+                  name: 'Supervisor de Planta (PRACTIKA)',
+                  username: 'operador',
+                  email: 'operaciones@practika.co',
+                  phone: '3150000000'
+                };
+                setActiveClient(mockClient);
+                localStorage.setItem('active_client', JSON.stringify(mockClient));
+                setActiveRole('practiker');
+                setIsPractikerLogged(true);
+                localStorage.setItem('isPractikerLogged', 'true');
+                showNotification('Entrando como Operario...', 'info');
               }}
-              className="text-orange-700 hover:text-orange-900 text-xs font-extrabold hover:underline transition duration-150"
+              className="text-[13px] font-extrabold text-[#78716c] hover:text-[#ff6a2b] transition cursor-pointer"
             >
-              {setupMode === 'register' 
-                ? '¿Ya tienes una cuenta? Iniciar Sesión' 
-                : '¿No te has registrado? Crear una Cuenta'}
+              Soy Practiker
             </button>
-
-            <div className="border-t border-slate-100 pt-4 flex flex-col gap-2">
-              <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
-                🔒 Personal Autorizado (Sin cuenta cliente)
-              </span>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    const mockClient = {
-                      name: 'Supervisor de Planta (PRACTIKA)',
-                      username: 'operador',
-                      email: 'operaciones@practika.co',
-                      phone: '3150000000'
-                    };
-                    setActiveClient(mockClient);
-                    localStorage.setItem('active_client', JSON.stringify(mockClient));
-                    setActiveRole('practiker');
-                    setIsPractikerLogged(true);
-                    localStorage.setItem('isPractikerLogged', 'true');
-                    showNotification('Iniciando estación de Operario directo...', 'info');
-                  }}
-                  className="bg-teal/10 hover:bg-teal/20 text-teal-800 font-black py-2 rounded-xl text-[12px] transition duration-150 cursor-pointer"
-                >
-                  👩‍🍳 Modo Operario
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const mockClient = {
-                      name: 'Director del Sistema (SGC)',
-                      username: 'admin',
-                      email: 'sgc@practika.co',
-                      phone: '3120000000'
-                    };
-                    setActiveClient(mockClient);
-                    localStorage.setItem('active_client', JSON.stringify(mockClient));
-                    setActiveRole('admin');
-                    setIsAdminLogged(true);
-                    localStorage.setItem('isAdminLogged', 'true');
-                    showNotification('Iniciando estación de Caja Central...', 'info');
-                  }}
-                  className="bg-orange-500/10 hover:bg-orange-500/20 text-orange-700 font-black py-2 rounded-xl text-[12px] transition duration-150 cursor-pointer"
-                >
-                  📊 Modo Caja Central
-                </button>
-              </div>
-            </div>
+            <div className="w-px h-4 bg-[#e7e5e4]"></div>
+            <button
+              type="button"
+              onClick={() => {
+                const mockClient = {
+                  name: 'Director del Sistema (SGC)',
+                  username: 'admin',
+                  email: 'sgc@practika.co',
+                  phone: '3120000000'
+                };
+                setActiveClient(mockClient);
+                localStorage.setItem('active_client', JSON.stringify(mockClient));
+                setActiveRole('admin');
+                setIsAdminLogged(true);
+                localStorage.setItem('isAdminLogged', 'true');
+                showNotification('Entrando como Administrador...', 'info');
+              }}
+              className="text-[13px] font-extrabold text-[#78716c] hover:text-[#ff6a2b] transition cursor-pointer"
+            >
+              Soy Administrador
+            </button>
           </div>
-
-          <p className="text-[12px] text-center text-slate-400 font-medium">
-            PRACTIKA Co-Op • ParqueSoft Meta SGC
-          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div id="practika-main" className="min-h-screen bg-slate-50 flex flex-col font-sans text-slate-800">
+    <div id="practika-main" className="min-h-screen w-full bg-[#f6f6f7] flex flex-col font-sans text-[#16140f]">
+      {/* AVISO DE VERSIÓN PILOTO */}
+      <div className="bg-[#ff6a2b] text-white text-center text-[11px] font-bold py-1 px-3 tracking-wide">
+        Versión piloto · datos de prueba, pueden reiniciarse
+      </div>
       
       {/* GLOBAL NOTIFICATION INSIGHT POPUP */}
       {globalNotif && (
@@ -1066,7 +1076,7 @@ export default function App() {
       )}
 
       {/* HEADER BAR (VIBRANT THEME) */}
-      <header id="app-header" className="h-20 bg-practika flex items-center justify-between px-6 md:px-10 shadow-md shrink-0 text-white border-b border-orange-950/40">
+      <header id="app-header" className="sticky top-0 z-30 h-16 bg-[#16140f] flex items-center justify-between px-5 shrink-0 text-white">
         <div 
           className="flex items-center gap-3 cursor-pointer select-none"
           onClick={() => {
@@ -1081,35 +1091,34 @@ export default function App() {
           }}
           title="Click 5 veces para acceso administrativo"
         >
-          <div className="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center font-black text-2xl text-white shadow-md hover:scale-105 active:scale-95 transition-all duration-150">
+          <div className="w-10 h-10 bg-[#ff6a2b] rounded-xl flex items-center justify-center font-black text-2xl text-white hover:scale-105 active:scale-95 transition-all duration-150">
             P
           </div>
           <div>
-            <span className="text-2xl font-bold tracking-tight text-white block leading-none">PRACTIKA</span>
-            <span className="text-[12px] tracking-widest text-orange-300 font-bold block mt-1 uppercase">Alistamiento al Vacío</span>
+            <span className="text-xl font-black tracking-tight text-white block leading-none">PRACTIKA</span>
+            <span className="text-[11px] tracking-widest text-[#ff8a5b] font-bold block mt-0.5 uppercase">Alistamiento al vacío</span>
           </div>
         </div>
 
         {/* PROFILE HEADER TAG */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-3">
           <div className="text-right">
-            <span className="text-[12px] bg-white/10 px-2.5 py-0.5 rounded-full text-orange-100 font-black tracking-wider border border-white/5 uppercase block">
-              {activeRole === 'cliente' && 'Suscrito / Premium'}
-              {activeRole === 'practiker' && 'Certificación HACV'}
-              {activeRole === 'admin' && 'Caja Central'}
+            <span className="text-[11px] text-white/45 font-bold uppercase tracking-wider block leading-none">
+              {activeRole === 'cliente' ? 'Cliente' : activeRole === 'practiker' ? 'Practiker' : 'Administrador'}
             </span>
-            <span className="text-xs font-bold text-white block mt-0.5">
-              {activeRole === 'cliente' && activeClient ? activeClient.name : 'Alejandro Galindo'}
-              {activeRole === 'practiker' && 'Operante de Planta'}
-              {activeRole === 'admin' && 'Caja Central / SGC'}
+            <span className="text-[13px] font-bold text-white block leading-tight mt-1">
+              {activeRole === 'cliente'
+                ? (activeClient?.name || 'Invitado')
+                : activeRole === 'practiker'
+                ? (practikers.find(p => p.id === selectedOperatorId)?.name || 'Operador')
+                : 'Administrador'}
             </span>
           </div>
-          <div className="w-9 h-9 bg-orange-700 rounded-full border border-orange-500/40 flex items-center justify-center text-white font-extrabold text-xs shadow-md select-none leading-none shrink-0">
+          <div className="w-9 h-9 bg-[#ff6a2b] rounded-full flex items-center justify-center text-white font-black text-xs shrink-0 leading-none">
             {(() => {
-              if (activeRole === 'cliente' && activeClient) {
-                return activeClient.name.substring(0, 2).toUpperCase();
-              }
-              return 'OP';
+              if (activeRole === 'cliente' && activeClient) return activeClient.name.substring(0, 2).toUpperCase();
+              if (activeRole === 'practiker') return (practikers.find(p => p.id === selectedOperatorId)?.name || 'OP').substring(0, 2).toUpperCase();
+              return 'AD';
             })()}
           </div>
           <button
@@ -1121,138 +1130,105 @@ export default function App() {
               setIsPractikerLogged(false);
               setIsAdminLogged(false);
               setActiveRole('cliente');
-              showNotification('Sesión finalizada. Regrese cuando lo desee.', 'info');
+              showNotification('Sesión finalizada. Vuelve cuando quieras.', 'info');
             }}
-            title="Cerrar Sesión / Salir"
-            className="text-[12px] bg-orange-600 hover:bg-orange-700 px-3 py-1.5 rounded-xl text-white font-black uppercase tracking-wider transition border border-orange-500/35 cursor-pointer leading-none"
+            title="Cerrar sesión"
+            className="text-[12px] bg-white/10 hover:bg-[#ff6a2b] px-3.5 py-2 rounded-xl text-white font-bold transition cursor-pointer leading-none"
           >
             Salir
           </button>
         </div>
       </header>
 
-      {/* SUB-HEADER OR ALERT LOGS OF THE COMMUNITY PLATFORM COOPERATIVE */}
-      <div className="bg-[#140603] text-slate-300 py-2 px-6 md:px-10 text-xs flex justify-between items-center overflow-x-auto whitespace-nowrap border-b border-orange-950/40">
-        <div className="flex items-center gap-4">
-          <span className="text-orange-400 font-black tracking-wider text-[11px] uppercase px-2 py-0.5 rounded bg-orange-500/15 border border-orange-500/20">
-            PARQUESOFT META CO-OP
-          </span>
-          <span className="opacity-90 font-medium">
-            {activeRole === 'cliente' && "🍽️ Alistando materias primas frescas locales para Villavicencio."}
-            {activeRole === 'practiker' && `👨‍🍳 Operando en: ${practikers.find(p=>p.id === selectedOperatorId)?.locationName || 'Hub principal'}`}
-            {activeRole === 'admin' && "📊 Panel Directivo - Control de mermas e inocuidad alimentaria."}
-          </span>
-        </div>
-        <div className="flex items-center gap-4 text-[13px]">
-          <span className="flex items-center gap-1.5 text-orange-400 font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse"></span>
-            Sincronización Multilateral Activa
-          </span>
-          <span className="text-slate-500 font-mono">Villavicencio, Col</span>
-        </div>
+      {/* BARRA DE ESTADO (CONTEXTO POR ROL) */}
+      <div className="bg-white text-[#78716c] py-2.5 px-5 text-[13px] flex justify-between items-center gap-4 overflow-x-auto whitespace-nowrap border-b border-[#efedeb]">
+        <span className="font-semibold text-[#16140f] truncate">
+          {activeRole === 'cliente' && '🍽️ Ingredientes frescos, listos al vacío'}
+          {activeRole === 'practiker' && `👨‍🍳 ${practikers.find(p=>p.id === selectedOperatorId)?.locationName || 'Hub principal'}`}
+          {activeRole === 'admin' && '📊 Panel de control · inocuidad y operación'}
+        </span>
+        <span className="flex items-center gap-2 text-[#ff6a2b] font-bold shrink-0">
+          <span className="w-2 h-2 rounded-full bg-[#ff6a2b] animate-pulse"></span>
+          Villavicencio
+        </span>
       </div>
 
       {/* CORE FRAMEWORK WORKSPACE */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+      <div className="flex-1 flex flex-col lg:flex-row lg:overflow-hidden">
         
         {((activeRole === 'practiker' && !isPractikerLogged) || (activeRole === 'admin' && !isAdminLogged)) ? (
-          <div className="flex-1 bg-slate-50 flex items-center justify-center p-6 md:p-12 overflow-y-auto animate-fade-in my-auto">
-            <div id="secure-login-container" className="w-full max-w-md bg-white border border-slate-200/80 rounded-[2.5rem] shadow-xl p-8 relative overflow-hidden transition-all">
-              {/* Decorative premium badge */}
-              <div className="absolute top-0 right-0 left-0 h-2 bg-gradient-to-r from-orange-500 to-amber-500"></div>
-              
-              <div className="text-center mb-6">
-                <div className="w-16 h-16 bg-orange-100/80 text-orange-650 rounded-3xl flex items-center justify-center mx-auto mb-4 border border-orange-200/40 shadow-inner">
-                  <Lock className="w-8 h-8" />
+          <div className="flex-1 bg-[#16140f] flex items-center justify-center p-5 animate-fade-in relative overflow-hidden">
+            <div className="absolute -top-20 -right-16 w-72 h-72 bg-[#ff6a2b]/25 rounded-full blur-3xl pointer-events-none"></div>
+            <div id="secure-login-container" className="w-full max-w-sm relative z-10">
+              <div className="text-center mb-7">
+                <div className="w-16 h-16 bg-[#ff6a2b] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-vibrant text-white">
+                  <Lock className="w-7 h-7" />
                 </div>
-                <h3 className="text-2xl font-black text-practika tracking-tight">Acceso de Personal Autorizado</h3>
-                <p className="text-xs text-slate-400 font-extrabold uppercase tracking-wider mt-1">SGC & CONTROL DE OPERACIONES</p>
-                <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-orange-50 border border-orange-500/10 rounded-full">
-                  <span className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
-                  <span className="text-[12px] font-bold text-orange-800 uppercase tracking-wide">
-                    {activeRole === 'practiker' ? 'Modo Operador de Planta (Practiker / Parking Operator)' : 'Administrativo / Caja Central (Central Cashier)'}
-                  </span>
-                </div>
+                <h3 className="text-2xl font-black text-white tracking-tight">
+                  {activeRole === 'practiker' ? 'Acceso Practiker' : 'Acceso Administrador'}
+                </h3>
+                <p className="text-[13px] text-white/50 font-semibold mt-1.5">
+                  {activeRole === 'practiker' ? 'Operador culinario certificado' : 'Panel de control y operación'}
+                </p>
               </div>
 
-              {loginError && (
-                <div className="mb-4.5 p-3.5 bg-red-50 border border-red-200 text-red-700 text-xs rounded-2xl font-medium leading-relaxed flex items-start gap-2">
-                  <AlertTriangle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
-                  <span>{loginError}</span>
-                </div>
-              )}
+              <div className="bg-white rounded-3xl p-6 shadow-[0_24px_60px_-20px_rgba(0,0,0,0.55)]">
+                {loginError && (
+                  <div className="mb-4 p-3.5 bg-red-50 border border-red-100 text-red-600 text-[13px] rounded-2xl font-bold flex items-start gap-2">
+                    <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>{loginError}</span>
+                  </div>
+                )}
 
-              <form onSubmit={handlePortalLogin} className="space-y-4">
-                <div>
-                  <label className="block text-[12px] font-black text-slate-550 uppercase tracking-widest mb-1.5">
-                    Usuario de Acceso
-                  </label>
-                  <div className="relative">
+                <form onSubmit={handlePortalLogin} className="space-y-3.5">
+                  <div>
+                    <label className="field-label">Usuario</label>
                     <input
                       type="text"
                       required
                       value={loginUser}
                       onChange={(e) => setLoginUser(e.target.value)}
-                      placeholder={activeRole === 'practiker' ? 'Ej. operador' : 'Ej. cajero o admin'}
-                      className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-xs px-3.5 py-3 rounded-2xl font-bold text-slate-700 outline-none transition-all"
+                      placeholder={activeRole === 'practiker' ? 'Ej. operador' : 'Ej. admin'}
+                      className="field-xl"
                     />
                   </div>
-                </div>
 
-                <div>
-                  <label className="block text-[12px] font-black text-slate-555 uppercase tracking-widest mb-1.5">
-                    Contraseña de Seguridad
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      required
-                      value={loginPass}
-                      onChange={(e) => setLoginPass(e.target.value)}
-                      placeholder="••••••••••••"
-                      className="w-full bg-slate-50 border border-slate-200 focus:bg-white focus:border-orange-500 focus:ring-1 focus:ring-orange-500 text-xs pl-3.5 pr-10 py-3 rounded-2xl font-bold text-slate-700 outline-none transition-all"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 outline-none"
-                    >
-                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
+                  <div>
+                    <label className="field-label">Contraseña</label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        required
+                        value={loginPass}
+                        onChange={(e) => setLoginPass(e.target.value)}
+                        placeholder="••••••••"
+                        className="field-xl pr-12"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-[#a8a29e] hover:text-[#16140f] outline-none"
+                      >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
                   </div>
-                </div>
 
-                <button
-                  type="submit"
-                  className="w-full py-3.5 bg-orange-500 hover:bg-orange-600 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition shadow-md flex items-center justify-center gap-2 mt-2 outline-none"
-                >
-                  <Unlock className="w-4 h-4" /> Validar Llave & Ingresar
-                </button>
-              </form>
+                  <button type="submit" className="btn-pill btn-pill-accent mt-1">
+                    <Unlock className="w-4 h-4" /> Ingresar
+                  </button>
+                </form>
 
-              {/* DEMO CREDENTIALS TOOLTIP */}
-              <div className="mt-5 p-4 bg-orange-50/60 border border-orange-500/10 rounded-2xl">
-                <p className="text-[12px] font-black text-orange-950 uppercase tracking-widest flex items-center gap-1">
-                  🔑 Credenciales Certificadas:
-                </p>
-                <div className="mt-2 text-[13px] text-slate-600 font-medium">
+                <div className="mt-4 p-3.5 bg-[#f6f6f7] rounded-2xl text-[12px] text-[#78716c]">
+                  <p className="font-bold text-[#16140f] mb-1">Credenciales de prueba</p>
                   {activeRole === 'practiker' ? (
-                    <div>
-                      <p className="font-bold text-slate-850">Estación Operador (Parking Operator Mode):</p>
-                      <p className="font-mono text-slate-500 mt-0.5">Usuario: <span className="font-bold text-orange-700 bg-orange-100/50 px-1 py-0.5 rounded">operador</span> o <span className="font-bold text-orange-700 bg-orange-100/50 px-1 py-0.5 rounded">practiker</span></p>
-                      <p className="font-mono text-slate-500 mt-0.5">Clave: <span className="font-bold text-orange-700 bg-orange-100/50 px-1 py-0.5 rounded">chef123</span></p>
-                    </div>
+                    <p>Usuario <span className="font-bold text-[#ff6a2b]">operador</span> · clave <span className="font-bold text-[#ff6a2b]">chef123</span></p>
                   ) : (
-                    <div>
-                      <p className="font-bold text-slate-850">Estación Caja Central (Central Cashier / Admin):</p>
-                      <p className="font-mono text-slate-500 mt-0.5">Usuario: <span className="font-bold text-orange-700 bg-orange-100/50 px-1 py-0.5 rounded">cajero</span> o <span className="font-bold text-orange-700 bg-orange-100/50 px-1 py-0.5 rounded">admin</span></p>
-                      <p className="font-mono text-slate-500 mt-0.5">Clave: <span className="font-bold text-orange-700 bg-orange-100/50 px-1 py-0.5 rounded">admin123</span></p>
-                    </div>
+                    <p>Usuario <span className="font-bold text-[#ff6a2b]">admin</span> · clave <span className="font-bold text-[#ff6a2b]">admin123</span></p>
                   )}
                 </div>
               </div>
 
-              {/* Return to home button */}
               <div className="mt-5 text-center">
                 <button
                   type="button"
@@ -1262,18 +1238,18 @@ export default function App() {
                     setLoginUser('');
                     setLoginPass('');
                   }}
-                  className="text-xs font-bold text-orange-900 hover:text-orange-950 underline underline-offset-4"
+                  className="text-[13px] font-bold text-white/60 hover:text-white transition"
                 >
-                  Volver a Vista de Cliente General
+                  ← Volver al inicio
                 </button>
               </div>
-
             </div>
           </div>
         ) : (
           <>
             {/* SIDEBAR CONTAINER */}
-            <aside id="app-sidebar" className="w-full lg:w-80 bg-white border-r border-slate-200 p-6 flex flex-col gap-6 shrink-0 overflow-y-auto">
+            {activeRole !== 'cliente' && (
+            <aside id="app-sidebar" className="w-full lg:w-80 bg-white border-b lg:border-b-0 lg:border-r border-[#efedeb] p-5 flex flex-col gap-5 shrink-0 lg:overflow-y-auto">
           
           {/* USER INTERFACE PROFILE-SPECIFIC CARDS AT SIDEBAR */}
           {activeRole === 'cliente' && (
@@ -1427,11 +1403,9 @@ export default function App() {
 
           {activeRole === 'practiker' && (
             <>
-              {/* OPERATOR MANAGER SELECTOR */}
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm text-center">
-                <p className="text-[12px] font-bold text-slate-500 uppercase tracking-widest mb-2">
-                  Identidad del Operario
-                </p>
+              {/* OPERARIO */}
+              <div className="card-app p-4">
+                <p className="field-label">Operario activo</p>
                 <select 
                   value={selectedOperatorId} 
                   onChange={(e) => {
@@ -1439,67 +1413,63 @@ export default function App() {
                     setActivePreparingOrderId(null);
                     setSelectedRecipe(null);
                   }}
-                  className="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-practika focus:outline-none focus:ring-1 focus:ring-vibrant"
+                  className="field-xl cursor-pointer"
                 >
                   {practikers.map(op => (
-                    <option key={op.id} value={op.id}>
-                      🧑‍🍳 {op.name} ({op.completedOrdersCount} desb)
-                    </option>
+                    <option key={op.id} value={op.id}>{op.name}</option>
                   ))}
                 </select>
-                <div className="mt-2 flex items-center justify-center gap-1 text-xs">
-                  <span className="text-amber-500 font-bold">★ {practikers.find(p=>p.id === selectedOperatorId)?.rating || '4.9'}</span>
-                  <span className="text-slate-400">•</span>
-                  <span className="text-slate-600">Carga: {practikers.find(p=>p.id === selectedOperatorId)?.currentWorkload || '0'} p</span>
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="chip chip-accent">★ {practikers.find(p=>p.id === selectedOperatorId)?.rating || '4.9'}</span>
+                  <span className="text-[13px] text-[#78716c] font-bold">Carga: {practikers.find(p=>p.id === selectedOperatorId)?.currentWorkload || '0'}</span>
                 </div>
               </div>
 
-              {/* MICRO-INVENTARIO ALERT PANEL */}
+              {/* MICRO-INVENTARIO */}
               <div>
-                <h4 className="text-xs font-bold text-practika uppercase tracking-wider mb-2 flex items-center gap-1">
-                  <AlertTriangle className="w-3.5 h-3.5 text-amber-500" /> Micro-Inventario
+                <h4 className="section-title text-[16px] flex items-center gap-1.5">
+                  <AlertTriangle className="w-4 h-4 text-[#ff6a2b]" /> Micro-inventario
                 </h4>
-                <p className="text-[13px] text-slate-500 mb-3 leading-relaxed">
-                  Monitorea tus existencias locales y reporta deficiencias al Chef Central:
-                </p>
+                <p className="section-sub mt-1 mb-3">Reporta existencias bajas al chef central.</p>
                 
                 <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
                   {practikers.find(p => p.id === selectedOperatorId)?.rawIngredientsStock.map((stock, i) => (
-                    <div key={i} className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/60 flex items-center justify-between text-xs transition-all">
-                      <div className="truncate pr-1">
-                        <p className="font-bold text-slate-700 truncate">{stock.ingredientName}</p>
-                        <div className="flex items-center gap-1.5 mt-0.5">
-                          <span className={`w-2 h-2 rounded-full ${stock.stockLevelPercent > 40 ? 'bg-orange-500' : 'bg-red-500'}`}></span>
-                          <span className="text-[12px] font-semibold text-slate-500">{stock.stockLevelPercent}% Disp.</span>
+                    <div key={i} className="card-app p-3 flex items-center justify-between">
+                      <div className="truncate pr-2">
+                        <p className="font-bold text-[#16140f] text-[13px] truncate">{stock.ingredientName}</p>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <span className={`w-2 h-2 rounded-full ${stock.stockLevelPercent > 40 ? 'bg-[#ff6a2b]' : 'bg-red-500'}`}></span>
+                          <span className="text-[12px] font-semibold text-[#a8a29e]">{stock.stockLevelPercent}%</span>
                         </div>
                       </div>
                       <button
                         onClick={() => handleReportStockAlert(selectedOperatorId, stock.ingredientName, stock.stockLevelPercent > 10)}
-                        className={`px-2 py-1 rounded text-[11px] font-bold transition ${
+                        className={`px-3 py-1.5 rounded-full text-[12px] font-bold transition shrink-0 ${
                           stock.stockLevelPercent > 10 
                             ? 'bg-red-50 text-red-600 hover:bg-red-100' 
-                            : 'bg-orange-50 text-orange-600 hover:bg-orange-100'
+                            : 'bg-[#fff3ec] text-[#ff6a2b] hover:bg-[#ffe6d7]'
                         }`}
                       >
-                        {stock.stockLevelPercent > 10 ? '¡Vaciar!' : '¡Surtir!'}
+                        {stock.stockLevelPercent > 10 ? 'Vaciar' : 'Surtir'}
                       </button>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* GAME STATS BOX */}
-              <div className="mt-auto p-4 bg-teal/10 border border-teal/20 rounded-2xl">
-                <p className="text-[12px] font-bold text-teal uppercase tracking-widest mb-1">
-                  Bono de Calidad Co-Op
-                </p>
-                <div className="flex justify-between items-baseline">
-                  <span className="text-2xl font-black text-practika">$125K</span>
-                  <span className="text-xs text-slate-500 font-semibold">Consolidado</span>
+              {/* BONO */}
+              <div className="mt-auto relative rounded-3xl bg-[#16140f] text-white p-5 overflow-hidden">
+                <div className="absolute -top-10 -right-8 w-40 h-40 bg-[#ff6a2b]/25 rounded-full blur-3xl pointer-events-none"></div>
+                <div className="relative z-10">
+                  <p className="text-[12px] text-white/55 font-bold uppercase tracking-widest mb-1">Bono de calidad</p>
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-2xl font-black">$125K</span>
+                    <span className="text-[12px] text-white/50 font-semibold">consolidado</span>
+                  </div>
+                  <p className="text-[12px] text-white/45 mt-1 leading-snug">
+                    Mantén mermas bajo 3% y vacíos perfectos para sumar bonos colectivos.
+                  </p>
                 </div>
-                <p className="text-[12px] text-slate-500 mt-1 leading-snug">
-                  Mantener mermas debajo del 3% y vacíos perfectos genera bonos colectivos.
-                </p>
               </div>
 
               <button
@@ -1507,11 +1477,11 @@ export default function App() {
                   setIsPractikerLogged(false);
                   localStorage.removeItem('isPractikerLogged');
                   setActiveRole('cliente');
-                  showNotification('Sesión del Operario cerrada de manera segura.', 'info');
+                  showNotification('Sesión cerrada de forma segura.', 'info');
                 }}
-                className="w-full py-2.5 bg-red-50 hover:bg-red-100 border border-red-200/55 rounded-xl text-red-700 text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm"
+                className="btn-pill btn-pill-ghost !text-red-600 !border-red-100 hover:!border-red-300"
               >
-                <Lock className="w-3.5 h-3.5" /> Cerrar Sesión Segura
+                <Lock className="w-4 h-4" /> Cerrar sesión
               </button>
             </>
           )}
@@ -1635,82 +1605,100 @@ export default function App() {
             </div>
           )}
         </aside>
+        )}
 
         {/* WORKSPACE AREA AREA */}
-        <section id="app-workspace" className="flex-1 p-6 md:p-8 bg-[#faf7f5] overflow-y-auto flex flex-col gap-6 relative">
+        <section id="app-workspace" className="flex-1 p-5 md:p-6 bg-[#f6f6f7] flex flex-col gap-5 relative lg:overflow-y-auto">
           
           {/* CLIENT VIEW FLOW */}
           {activeRole === 'cliente' && (
-            <div className="flex-1 flex flex-col gap-6 animate-fade-in">
+            <div className="w-full max-w-2xl mx-auto flex-1 flex flex-col gap-6 animate-fade-in">
               
-              {/* HERO BANNER SECTION */}
-              <div className="relative rounded-[2.5rem] bg-gradient-to-r from-practika to-teal p-6 md:p-8 text-white flex flex-col justify-center shadow-lg min-h-48 overflow-hidden">
-                <div className="absolute right-0 bottom-[-20px] text-[180px] font-black opacity-10 leading-none select-none pointer-events-none">
-                  SOUS
-                </div>
-                <div className="max-w-xl relative z-10">
-                  <span className="bg-vibrant/90 text-[12px] tracking-widest text-white px-2.5 py-1 rounded-full font-black uppercase inline-block mb-3">
-                    Estándares de Economía Colaborativa
-                  </span>
-                  <h2 className="text-3xl md:text-4xl font-extrabold leading-tight tracking-tight mb-2">
-                    Ahorra Tiempo y Cero Mermas al Cocinar
-                  </h2>
-                  <p className="text-slate-100 text-xs md:text-sm leading-relaxed mb-4">
-                    PRACTIKA te entrega bases aromáticas, condimentos, vegetales asados y proteínas porcionadas y marinadas. Todo cocido o empacado al vacío por chefs de tu zona para resolver tu mes culinario.
+              {/* SALUDO */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-[13px] text-[#78716c] font-bold flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-[#ff6a2b]" /> Villavicencio
                   </p>
-                  
-                  {/* QUICK STATS */}
-                  <div className="flex items-center gap-6 mt-4">
-                    <div className="text-center bg-white/10 px-4 py-2 rounded-2xl backdrop-blur-sm border border-white/10">
-                      <span className="block text-xl font-bold">100%</span>
-                      <span className="text-[11px] text-orange-200 uppercase font-bold tracking-wider">Inocuidad HACCP</span>
+                  <h2 className="text-[26px] font-black tracking-tight leading-tight">
+                    Hola, {(activeClient?.name || 'bienvenido').split(' ')[0]} 👋
+                  </h2>
+                </div>
+                <div className="w-12 h-12 rounded-full bg-[#16140f] text-white flex items-center justify-center font-black text-sm shrink-0">
+                  {(activeClient?.name || 'PK').substring(0, 2).toUpperCase()}
+                </div>
+              </div>
+
+              {/* BUSCADOR */}
+              <div className="relative">
+                <Search className="w-5 h-5 text-[#a8a29e] absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="¿Qué vas a alistar hoy?"
+                  className="field-xl pl-12"
+                />
+              </div>
+
+              {/* TARJETA PLAN (estilo wallet) */}
+              <div className="relative rounded-3xl bg-[#16140f] text-white p-5 overflow-hidden">
+                <div className="absolute -top-12 -right-8 w-44 h-44 bg-[#ff6a2b]/30 rounded-full blur-3xl pointer-events-none"></div>
+                <div className="relative z-10">
+                  <p className="text-[12px] text-white/55 font-bold uppercase tracking-widest">Tu plan activo</p>
+                  <h3 className="text-xl font-black mt-1">{selectedSubscription ? selectedSubscription.name : 'Plan Familiar Conveniencia'}</h3>
+                  <div className="mt-4">
+                    <div className="flex justify-between text-[12px] text-white/60 font-bold mb-1.5">
+                      <span>Alistados consumidos</span><span className="text-[#ff8a5b]">14 / 20</span>
                     </div>
-                    <div className="text-center bg-white/10 px-4 py-2 rounded-2xl backdrop-blur-sm border border-white/10">
-                      <span className="block text-xl font-bold">3 Días</span>
-                      <span className="text-[11px] text-orange-200 uppercase font-bold tracking-wider">De Entrega Máx.</span>
+                    <div className="h-2 bg-white/15 rounded-full overflow-hidden">
+                      <div className="h-full bg-[#ff6a2b] w-[70%]"></div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* SECTIONS LAYOUT */}
-              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+              {/* CATEGORÍAS (íconos) */}
+              <div>
+                <h3 className="section-title mb-3">Categorías</h3>
+                <div className="grid grid-cols-5 gap-2">
+                  {[
+                    { name: 'Todos', emoji: '🍽️' },
+                    { name: 'Bases', emoji: '🧄' },
+                    { name: 'Salsas', emoji: '🧉' },
+                    { name: 'Vegetales', emoji: '🥗' },
+                    { name: 'Proteínas', emoji: '🍗' },
+                  ].map((cat) => {
+                    const on = activeCategory === cat.name;
+                    return (
+                      <button
+                        key={cat.name}
+                        onClick={() => setActiveCategory(cat.name)}
+                        className="flex flex-col items-center gap-1.5 cursor-pointer"
+                      >
+                        <span className={`w-full aspect-square rounded-2xl flex items-center justify-center text-2xl transition-all duration-200 ${on ? 'bg-[#ff6a2b] shadow-vibrant scale-105' : 'bg-white border border-[#efedeb]'}`}>
+                          {cat.emoji}
+                        </span>
+                        <span className={`text-[11px] font-bold text-center leading-tight ${on ? 'text-[#ff6a2b]' : 'text-[#78716c]'}`}>
+                          {cat.name}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* CONTENEDOR PRINCIPAL (una columna) */}
+              <div className="flex flex-col gap-6">
                 
-                {/* PRODUCTS LIST GRID (COL-SPAN 2) */}
-                <div className="xl:col-span-2 flex flex-col gap-5">
-                  <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 bg-white p-5 rounded-3xl border border-slate-200/50 shadow-sm">
-                    <div>
-                      <h3 className="text-xl font-extrabold text-practika tracking-tight">
-                        Catálogo de Alistamiento
-                      </h3>
-                      <p className="text-xs text-slate-400 mt-1">
-                        Selecciona kits específicos para añadir a tu canasta de entrega programada.
-                      </p>
-                    </div>
-                    
-                    {/* CATEGORY SWITCHES */}
-                    <div className="flex flex-wrap gap-1 bg-slate-50 p-1 rounded-2xl border border-slate-100">
-                      {['Todos', 'Bases', 'Salsas', 'Vegetales', 'Proteínas'].map((cat) => (
-                        <button
-                          key={cat}
-                          onClick={() => setActiveCategory(cat)}
-                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 ${
-                            activeCategory === cat 
-                              ? 'bg-practika text-white shadow-sm' 
-                              : 'text-slate-600 hover:text-orange-950 hover:bg-orange-50/50'
-                          }`}
-                        >
-                          {cat}
-                        </button>
-                      ))}
-                    </div>
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="section-title">Para ti</h3>
+                    <span className="text-[13px] font-bold text-[#ff6a2b]">{filteredProducts.length} productos</span>
                   </div>
 
                   {/* PRODUCTS GRID */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3">
                     {filteredProducts.length > 0 ? (
                       filteredProducts.map((p) => {
-                        // Emoji assignments based on categories
                         let emoji = '🍗';
                         if (p.category === 'Bases') emoji = '🧄';
                         else if (p.category === 'Salsas') emoji = '🧉';
@@ -1719,56 +1707,28 @@ export default function App() {
                         const quantityInCart = cart.find(c => c.product.id === p.id)?.q || 0;
 
                         return (
-                          <div 
-                            key={p.id} 
-                            className="group bg-white rounded-3xl p-6 border border-slate-200/50 hover:border-orange-500/35 flex flex-col justify-between shadow-sm hover:shadow-md transition-all duration-300 relative overflow-hidden"
-                          >
-                            <div>
-                              <div className="h-28 bg-orange-50/40 rounded-2xl mb-4 relative overflow-hidden flex items-center justify-center border border-orange-500/10">
-                                <span className="text-4xl filter drop-shadow group-hover:scale-110 transition-transform duration-300 select-none">{emoji}</span>
-                                <div className="absolute top-2 right-2 bg-orange-600/10 text-orange-850 backdrop-blur-sm px-2 py-0.5 rounded-lg text-[11px] font-extrabold uppercase tracking-widest">
-                                  {p.category}
-                                </div>
-                                <div className="absolute bottom-2 left-2 bg-practika/90 text-white px-2 py-0.5 rounded-lg text-[11px] font-bold shadow-sm">
-                                  {p.weightGrams}g / {p.unit}
-                                </div>
-                              </div>
-                              <h4 className="font-extrabold text-practika text-md leading-tight group-hover:text-orange-600 transition-colors">
-                                {p.name}
-                              </h4>
-                              <p className="text-xs text-slate-500 mt-1.5 mb-4 line-clamp-2 leading-relaxed">
-                                {p.description}
-                              </p>
+                          <div key={p.id} className="card-app p-3 flex flex-col">
+                            <div className="relative h-24 bg-[#fff3ec] rounded-2xl mb-2.5 flex items-center justify-center overflow-hidden">
+                              <span className="text-4xl select-none">{emoji}</span>
+                              <span className="absolute top-2 left-2 chip chip-dark !px-2 !py-0.5 text-[10px]">{p.category}</span>
                             </div>
-
-                            <div className="pt-3 border-t border-slate-100 flex justify-between items-center mt-auto">
-                              <div>
-                                <span className="text-[12px] text-slate-400 block leading-none uppercase font-bold tracking-wider">Precio</span>
-                                <span className="font-black text-lg text-practika">$ {p.price.toLocaleString()} COP</span>
-                              </div>
-                              
+                            <h4 className="font-extrabold text-[#16140f] text-[14px] leading-tight line-clamp-2">{p.name}</h4>
+                            <p className="text-[12px] text-[#a8a29e] font-semibold mt-0.5">{p.weightGrams}g · {p.unit}</p>
+                            <div className="flex items-center justify-between mt-3">
+                              <span className="font-black text-[15px] text-[#16140f]">${p.price.toLocaleString()}</span>
                               {quantityInCart > 0 ? (
-                                <div className="flex items-center gap-2 bg-orange-600 p-1 rounded-full text-white shadow-sm">
-                                  <button 
-                                    onClick={() => updateCartQuantity(p.id, -1)}
-                                    className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/40 font-bold transition"
-                                  >
-                                    <Minus className="w-3" />
-                                  </button>
-                                  <span className="text-xs font-bold px-1.5 min-w-[12px] text-center">{quantityInCart}</span>
-                                  <button 
-                                    onClick={() => updateCartQuantity(p.id, 1)}
-                                    className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/40 font-bold transition"
-                                  >
-                                    <Plus className="w-3" />
-                                  </button>
+                                <div className="flex items-center gap-1.5 bg-[#ff6a2b] p-1 rounded-full text-white">
+                                  <button onClick={() => updateCartQuantity(p.id, -1)} className="w-6 h-6 bg-white/25 rounded-full flex items-center justify-center"><Minus className="w-3 h-3" /></button>
+                                  <span className="text-[12px] font-bold min-w-[14px] text-center">{quantityInCart}</span>
+                                  <button onClick={() => updateCartQuantity(p.id, 1)} className="w-6 h-6 bg-white/25 rounded-full flex items-center justify-center"><Plus className="w-3 h-3" /></button>
                                 </div>
                               ) : (
                                 <button
                                   onClick={() => handleAddToCard(p)}
-                                  className="bg-practika hover:bg-orange-600 hover:shadow-md text-white px-4 py-2 rounded-full text-xs font-bold transition-all duration-200 flex items-center gap-1 shrink-0"
+                                  className="w-9 h-9 bg-[#ff6a2b] hover:bg-[#16140f] text-white rounded-full flex items-center justify-center shadow-vibrant transition-all duration-200 shrink-0"
+                                  aria-label="Agregar"
                                 >
-                                  <Plus className="w-3.5 h-3.5" /> Agregar
+                                  <Plus className="w-5 h-5" />
                                 </button>
                               )}
                             </div>
@@ -1776,7 +1736,7 @@ export default function App() {
                         );
                       })
                     ) : (
-                      <p className="text-xs text-slate-400 col-span-2 py-10 text-center">Cargando productos de alistamiento culinario...</p>
+                      <p className="text-[13px] text-[#a8a29e] col-span-2 py-10 text-center">Cargando productos...</p>
                     )}
                   </div>
                 </div>
@@ -1785,30 +1745,28 @@ export default function App() {
                 <div className="flex flex-col gap-6">
                   
                   {/* SELECT PLAN PREFERENCE */}
-                  <div className="p-5 bg-slate-50 rounded-3xl border border-slate-200">
-                    <h3 className="text-sm font-black text-practika uppercase tracking-wider mb-3">
-                      Selecciona un Plan Mensual
-                    </h3>
+                  <div className="card-app p-5">
+                    <h3 className="section-title mb-3">Elige tu plan</h3>
                     <div className="space-y-2">
                       {subscriptions.map((sub) => (
                         <div 
                           key={sub.id} 
                           onClick={() => {
                             setActiveSuscId(sub.id);
-                            showNotification(`Has seleccionado el ${sub.name}. Tu catálogo ya está optimizado.`, 'info');
+                            showNotification(`Plan seleccionado: ${sub.name}.`, 'info');
                           }}
-                          className={`p-3 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between ${
+                          className={`p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex items-center justify-between ${
                             activeSuscId === sub.id 
-                              ? 'border-vibrant bg-white shadow-sm' 
-                              : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100'
+                              ? 'border-[#ff6a2b] bg-[#fff7f2]' 
+                              : 'border-[#efedeb] bg-white hover:bg-[#f6f6f7]'
                           }`}
                         >
                           <div>
-                            <p className="text-xs font-extrabold text-practika">{sub.name}</p>
-                            <span className="text-[12px] text-slate-500 font-medium">Ciclo: {sub.deliveryFrequency}</span>
+                            <p className="text-[14px] font-extrabold text-[#16140f]">{sub.name}</p>
+                            <span className="text-[12px] text-[#a8a29e] font-semibold">Ciclo: {sub.deliveryFrequency}</span>
                           </div>
-                          <span className="text-xs font-black text-vibrant">
-                            $ {Math.round(sub.priceMonthly / 1000)}k <span className="text-[11px] text-slate-400 font-normal">/mes</span>
+                          <span className="text-[14px] font-black text-[#ff6a2b] shrink-0 ml-2">
+                            ${Math.round(sub.priceMonthly / 1000)}k<span className="text-[11px] text-[#a8a29e] font-bold">/mes</span>
                           </span>
                         </div>
                       ))}
@@ -1816,13 +1774,13 @@ export default function App() {
                   </div>
 
                   {/* SHOPPING CART / CURRENT PROGRAM */}
-                  <div className="p-5 bg-indigo-50/40 rounded-3xl border border-dashed border-indigo-200/80 flex-1 flex flex-col justify-between">
+                  <div className="card-app p-5 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center justify-between mb-3">
-                        <h4 className="text-xs font-black text-practika uppercase tracking-wider flex items-center gap-1">
-                          <ShoppingBag className="w-4 h-4 text-vibrant" /> Tu Canasta de Alistamiento
+                        <h4 className="section-title flex items-center gap-2">
+                          <ShoppingBag className="w-5 h-5 text-[#ff6a2b]" /> Tu canasta
                         </h4>
-                        <span className="bg-indigo-100 text-indigo-700 text-[12px] px-2 py-0.5 rounded-full font-bold">
+                        <span className="chip chip-accent">
                           {cart.reduce((s, c) => s + c.q, 0)} items
                         </span>
                       </div>
@@ -1852,7 +1810,7 @@ export default function App() {
                       )}
 
                       {/* DELIVERY WINDOW CONFIG */}
-                      <div className="pt-3 border-t border-indigo-100 space-y-2">
+                      <div className="pt-3 border-t border-[#efedeb] space-y-2">
                         <label className="block text-[12px] font-bold text-slate-500 uppercase tracking-wider">
                           Dirección de Entrega
                         </label>
@@ -1906,13 +1864,9 @@ export default function App() {
                       <button
                         onClick={handleCheckout}
                         disabled={cart.length === 0}
-                        className={`w-full py-3.5 rounded-2xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1 transition ${
-                          cart.length > 0 
-                            ? 'bg-vibrant hover:bg-vibrant/90 text-white shadow-vibrant cursor-pointer' 
-                            : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                        }`}
+                        className={`btn-pill ${cart.length > 0 ? 'btn-pill-accent' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
                       >
-                        Agendar y Alistar al Vacío <ArrowRight className="w-3.5 h-3.5" />
+                        Agendar y alistar al vacío <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
@@ -1928,21 +1882,22 @@ export default function App() {
             <div className="flex-1 flex flex-col gap-6 animate-fade-in">
               
               {/* STATUS LOGISTICS OVERVIEW */}
-              <div className="p-5 bg-gradient-to-r from-practika to-teal text-white rounded-[2.5rem] shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
-                <div>
-                  <h3 className="text-xl font-black">Centro de Operaciones Colaborativas</h3>
-                  <p className="text-xs text-[#C6EBEC] mt-0.5 leading-relaxed">
-                    Preparación gamificada con protocolos HACCP. Alista los ingredientes usando las recetas del Chef Álvaro.
+              <div className="relative p-6 bg-[#16140f] text-white rounded-3xl overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="absolute -top-16 -right-10 w-56 h-56 bg-[#ff6a2b]/25 rounded-full blur-3xl pointer-events-none"></div>
+                <div className="relative z-10">
+                  <h3 className="text-xl font-black">Centro de operaciones</h3>
+                  <p className="text-[13px] text-white/55 mt-1 leading-relaxed max-w-md">
+                    Preparación guiada con protocolos HACCP usando las recetas del Chef Álvaro.
                   </p>
                 </div>
-                <div className="flex gap-2">
-                  <div className="bg-white/10 px-4 py-2 rounded-xl text-center">
+                <div className="flex gap-2 relative z-10">
+                  <div className="bg-white/10 border border-white/10 px-4 py-2.5 rounded-2xl text-center">
                     <span className="block text-lg font-black">{orders.filter(o => o.status === 'pendiente').length}</span>
-                    <span className="text-[11px] text-[#A6E1E4] uppercase">Pendientes</span>
+                    <span className="text-[11px] text-white/45 uppercase font-bold tracking-wider">Pendientes</span>
                   </div>
-                  <div className="bg-white/10 px-4 py-2 rounded-xl text-center">
+                  <div className="bg-white/10 border border-white/10 px-4 py-2.5 rounded-2xl text-center">
                     <span className="block text-lg font-black">{orders.filter(o => o.status === 'preparando' && o.operatorId === selectedOperatorId).length}</span>
-                    <span className="text-[11px] text-[#A6E1E4] uppercase">En Cocina</span>
+                    <span className="text-[11px] text-white/45 uppercase font-bold tracking-wider">En cocina</span>
                   </div>
                 </div>
               </div>
@@ -2603,37 +2558,49 @@ export default function App() {
 
       </div>
 
-      {/* FOOTER AREA BAR */}
-      <footer id="app-footer" className="h-16 bg-white border-t border-slate-200 px-6 md:px-10 flex items-center justify-between shrink-0 text-xs">
-        <div className="flex gap-4 md:gap-12 text-xs font-bold text-slate-400 uppercase tracking-widest">
-          <div className={`flex items-center gap-2 ${activeRole === 'cliente' ? 'text-vibrant' : ''}`}>
-            <span className={`w-2 h-2 rounded-full ${activeRole === 'cliente' ? 'bg-vibrant' : 'bg-slate-300'}`}></span>
-            Catálogo
-          </div>
-          <div className={`flex items-center gap-2 ${activeRole === 'practiker' ? 'text-teal' : ''}`}>
-            <span className={`w-2 h-2 rounded-full ${activeRole === 'practiker' ? 'bg-teal' : 'bg-slate-300'}`}></span>
-            Recetario IA
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-slate-300"></span>
-            Comunidad
-          </div>
-        </div>
-        <div className="flex items-center gap-4 text-slate-400 font-semibold text-[12px] md:text-xs">
-          <span>Desarrollado en alianza con</span>
-          <div className="flex items-center gap-1 font-extrabold text-slate-600">
-            <div className="w-4 h-4 bg-practika rounded-sm"></div> 
-            PARQUESOFT META
-            <button 
-              onClick={() => setIsSecretAdminModalOpen(true)}
-              className="ml-2 text-slate-300 hover:text-slate-500 transition-colors p-1"
-              title="Panel de Control Administrativo"
-            >
-              <Shield className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        </div>
-      </footer>
+      {/* BARRA DE NAVEGACIÓN INFERIOR (TIPO SUPER-APP) */}
+      <nav id="app-bottom-nav" className="bottom-nav">
+        <button
+          className="nav-item nav-item-on"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <span className="nav-icon"><ShoppingBag className="w-5 h-5" /></span>
+          Inicio
+        </button>
+
+        <button
+          className="nav-item"
+          onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+        >
+          <span className="nav-icon"><Package className="w-5 h-5" /></span>
+          {activeRole === 'admin' ? 'Pedidos' : activeRole === 'practiker' ? 'Tareas' : 'Mi plan'}
+        </button>
+
+        <button
+          className="nav-item"
+          onClick={() => setIsAssistantOpen(true)}
+        >
+          <span className="nav-icon"><Sparkles className="w-5 h-5" /></span>
+          Asistente
+        </button>
+
+        <button
+          className="nav-item"
+          onClick={() => {
+            localStorage.removeItem('active_client');
+            localStorage.removeItem('isPractikerLogged');
+            localStorage.removeItem('isAdminLogged');
+            setActiveClient(null);
+            setIsPractikerLogged(false);
+            setIsAdminLogged(false);
+            setActiveRole('cliente');
+            showNotification('Sesión finalizada. Vuelve cuando quieras.', 'info');
+          }}
+        >
+          <span className="nav-icon"><User className="w-5 h-5" /></span>
+          Salir
+        </button>
+      </nav>
 
       {/* SECRET ADMINISTRATIVE CONFIGURATION & ACCOUNT CREATOR MODAL */}
       {isSecretAdminModalOpen && (

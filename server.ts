@@ -3,10 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import 'dotenv/config'; // Carga variables de .env (GEMINI_API_KEY, PORT, etc.)
 import express from 'express';
 import compression from 'compression';
 import path from 'path';
 import fs from 'fs';
+import crypto from 'node:crypto';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
 import { 
@@ -485,6 +487,39 @@ let mockOrders: Order[] = [
 
 const PORT = Number(process.env.PORT) || 3000;
 
+// --- SEGURIDAD: HASH DE CONTRASEÑAS (scrypt, sin dependencias externas) ---
+
+/** Genera un hash seguro de una contraseña: formato "scrypt$<salt>$<hash>". */
+function hashPassword(plain: string): string {
+  const salt = crypto.randomBytes(16).toString('hex');
+  const derived = crypto.scryptSync(plain, salt, 64).toString('hex');
+  return `scrypt$${salt}$${derived}`;
+}
+
+/** Indica si un valor ya está hasheado (para no re-hashear ni guardar texto plano). */
+function isHashed(value: string | undefined | null): boolean {
+  return typeof value === 'string' && value.startsWith('scrypt$');
+}
+
+/**
+ * Verifica una contraseña contra el valor almacenado.
+ * Soporta hashes scrypt y, por compatibilidad con cuentas semilla antiguas,
+ * comparación directa en texto plano (legacy).
+ */
+function verifyPassword(plain: string, stored: string | undefined | null): boolean {
+  if (!stored) return false;
+  if (isHashed(stored)) {
+    const [, salt, hash] = stored.split('$');
+    if (!salt || !hash) return false;
+    const derived = crypto.scryptSync(plain, salt, 64).toString('hex');
+    const a = Buffer.from(derived, 'hex');
+    const b = Buffer.from(hash, 'hex');
+    return a.length === b.length && crypto.timingSafeEqual(a, b);
+  }
+  // Legacy: contraseña guardada en texto plano (cuentas semilla).
+  return plain === stored;
+}
+
 async function startServer() {
   const app = express();
 
@@ -503,6 +538,32 @@ async function startServer() {
 
   // File path for persistent user store
   const usersFilePath = path.join(process.cwd(), 'users_db.json');
+
+  // --- PERSISTENCIA DE PEDIDOS (para que no se borren al reiniciar) ---
+  const ordersFilePath = path.join(process.cwd(), 'orders_db.json');
+
+  function saveOrders() {
+    try {
+      fs.writeFileSync(ordersFilePath, JSON.stringify(mockOrders, null, 2), 'utf8');
+    } catch (err) {
+      console.error('Error writing orders_db.json', err);
+    }
+  }
+
+  // Cargar pedidos previos si existen; si no, persistir los iniciales.
+  try {
+    if (fs.existsSync(ordersFilePath)) {
+      const data = fs.readFileSync(ordersFilePath, 'utf8').trim();
+      if (data) {
+        const parsed = JSON.parse(data);
+        if (Array.isArray(parsed)) mockOrders = parsed;
+      }
+    } else {
+      saveOrders();
+    }
+  } catch (err) {
+    console.error('Error reading orders_db.json, usando pedidos iniciales', err);
+  }
 
   // Helper to load users from JSON file safely without crashing on null/undefined
   function loadStoredUsers() {
@@ -547,10 +608,18 @@ async function startServer() {
     return defaultUsers;
   }
 
-  // Helper to save users to JSON file
+  // Helper to save users to JSON file (cifra contraseñas en texto plano antes de guardar)
   function saveStoredUsers(usersList: any) {
     try {
-      fs.writeFileSync(usersFilePath, JSON.stringify(usersList, null, 2), 'utf8');
+      const secured = Array.isArray(usersList)
+        ? usersList.map((u: any) => {
+            if (u && typeof u.password === 'string' && u.password && !isHashed(u.password)) {
+              return { ...u, password: hashPassword(u.password) };
+            }
+            return u;
+          })
+        : usersList;
+      fs.writeFileSync(usersFilePath, JSON.stringify(secured, null, 2), 'utf8');
       return true;
     } catch (err) {
       console.error("Error writing to users_db.json", err);
@@ -630,9 +699,11 @@ async function startServer() {
     const u = username ? username.trim().toLowerCase() : '';
     const existing = loadStoredUsers();
 
-    const matched = existing.find((usr: any) => usr.username === u && usr.password === password);
+    const matched = existing.find((usr: any) => usr.username === u && verifyPassword(password, usr.password));
     if (matched) {
-      res.json({ success: true, user: matched });
+      // No exponer el hash de la contraseña al cliente
+      const { password: _pw, ...safeUser } = matched;
+      res.json({ success: true, user: safeUser });
     } else {
       res.status(401).json({ error: 'Usuario o contraseña incorrectos.' });
     }
@@ -739,6 +810,7 @@ async function startServer() {
     };
 
     mockOrders.push(newOrder);
+    saveOrders();
     res.status(201).json(newOrder);
   });
 
@@ -770,6 +842,7 @@ async function startServer() {
       op.currentWorkload += 1;
     }
 
+    saveOrders();
     res.json(mockOrders[orderIndex]);
   });
 
@@ -782,6 +855,7 @@ async function startServer() {
     }
 
     mockOrders[orderIndex].status = 'preparando';
+    saveOrders();
     res.json(mockOrders[orderIndex]);
   });
 
@@ -819,6 +893,7 @@ async function startServer() {
       }
     }
 
+    saveOrders();
     res.json(mockOrders[orderIndex]);
   });
 
@@ -831,6 +906,7 @@ async function startServer() {
     }
 
     mockOrders[orderIndex].status = 'entregado';
+    saveOrders();
     res.json(mockOrders[orderIndex]);
   });
 
