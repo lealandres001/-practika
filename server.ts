@@ -4,6 +4,7 @@
  */
 
 import express from 'express';
+import compression from 'compression';
 import path from 'path';
 import fs from 'fs';
 import { createServer as createViteServer } from 'vite';
@@ -486,6 +487,9 @@ const PORT = Number(process.env.PORT) || 3000;
 
 async function startServer() {
   const app = express();
+
+  // Compresión gzip de todas las respuestas (HTML, JS, CSS, JSON)
+  app.use(compression());
 
   // Middleware for JSON logging & parsing
   app.use(express.json({ limit: '10mb' }));
@@ -1046,8 +1050,19 @@ async function startServer() {
   } else {
     console.log("Configuring Production Web Static Resource Routing...");
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
+    // Assets con hash de contenido: caché agresiva (1 año, inmutable).
+    // index.html nunca se cachea para que siempre cargue la última versión.
+    app.use(express.static(distPath, {
+      maxAge: '1y',
+      index: false,
+      setHeaders: (res, filePath) => {
+        if (filePath.endsWith('index.html')) {
+          res.setHeader('Cache-Control', 'no-cache');
+        }
+      }
+    }));
     app.get('*', (req, res) => {
+      res.setHeader('Cache-Control', 'no-cache');
       res.sendFile(path.join(distPath, 'index.html'));
     });
   }
