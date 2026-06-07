@@ -862,14 +862,14 @@ export default function App() {
               </button>
             ) : (
               <div 
-                className="flex items-center gap-1.5 text-[10px] font-black text-slate-400 bg-slate-150/50 border border-slate-200 px-3 py-1.5 rounded-xl select-none"
+                className="flex items-center gap-1.5 text-[12px] font-black text-slate-400 bg-slate-150/50 border border-slate-200 px-3 py-1.5 rounded-xl select-none"
                 title="Debe registrar una cuenta antes de acceder al menú principal"
               >
                 🚫 Retorno Bloqueado (Falta Registro)
               </div>
             )}
 
-            <span className="text-[10px] text-slate-450 font-bold uppercase tracking-wider font-mono">
+            <span className="text-[12px] text-slate-450 font-bold uppercase tracking-wider font-mono">
               PARQUESOFT META
             </span>
           </div>
@@ -881,7 +881,7 @@ export default function App() {
             <h2 className="text-xl font-black text-practika">
               {setupMode === 'register' ? 'Registro de Cliente' : 'Iniciar Sesión'}
             </h2>
-            <p className="text-[10px] text-orange-700 font-extrabold uppercase tracking-widest mt-0.5">
+            <p className="text-[12px] text-orange-700 font-extrabold uppercase tracking-widest mt-0.5">
               Identidad de Operaciones PRACTIKA
             </p>
             <p className="text-xs text-slate-500 leading-normal mt-3">
@@ -901,7 +901,7 @@ export default function App() {
             {setupMode === 'register' && (
               <>
                 <div>
-                  <label className="block text-[9px] font-black text-slate-450 uppercase tracking-wider mb-1">
+                  <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
                     Nombre Completo (Cliente)
                   </label>
                   <input
@@ -915,7 +915,7 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="block text-[9px] font-black text-slate-450 uppercase tracking-wider mb-1">
+                  <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
                     Email / Correo de contacto
                   </label>
                   <input
@@ -929,7 +929,7 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="block text-[9px] font-black text-slate-450 uppercase tracking-wider mb-1">
+                  <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
                     Número de Teléfono
                   </label>
                   <input
@@ -945,7 +945,7 @@ export default function App() {
             )}
 
             <div>
-              <label className="block text-[9px] font-black text-slate-450 uppercase tracking-wider mb-1">
+              <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
                 Nombre de Usuario (Login / Nick)
               </label>
               <input
@@ -959,7 +959,7 @@ export default function App() {
             </div>
 
             <div>
-              <label className="block text-[9px] font-black text-slate-450 uppercase tracking-wider mb-1">
+              <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
                 Contraseña de Seguridad
               </label>
               <input
@@ -995,7 +995,7 @@ export default function App() {
             </button>
 
             <div className="border-t border-slate-100 pt-4 flex flex-col gap-2">
-              <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold">
+              <span className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
                 🔒 Personal Autorizado (Sin cuenta cliente)
               </span>
               <div className="grid grid-cols-2 gap-2">
@@ -1015,7 +1015,7 @@ export default function App() {
                     localStorage.setItem('isPractikerLogged', 'true');
                     showNotification('Iniciando estación de Operario directo...', 'info');
                   }}
-                  className="bg-teal/10 hover:bg-teal/20 text-teal-800 font-black py-2 rounded-xl text-[10px] transition duration-150 cursor-pointer"
+                  className="bg-teal/10 hover:bg-teal/20 text-teal-800 font-black py-2 rounded-xl text-[12px] transition duration-150 cursor-pointer"
                 >
                   👩‍🍳 Modo Operario
                 </button>
@@ -1035,7 +1035,7 @@ export default function App() {
                     localStorage.setItem('isAdminLogged', 'true');
                     showNotification('Iniciando estación de Caja Central...', 'info');
                   }}
-                  className="bg-orange-500/10 hover:bg-orange-500/20 text-orange-700 font-black py-2 rounded-xl text-[10px] transition duration-150 cursor-pointer"
+                  className="bg-orange-500/10 hover:bg-orange-500/20 text-orange-700 font-black py-2 rounded-xl text-[12px] transition duration-150 cursor-pointer"
                 >
                   📊 Modo Caja Central
                 </button>
@@ -1043,7 +1043,7 @@ export default function App() {
             </div>
           </div>
 
-          <p className="text-[10px] text-center text-slate-400 font-medium">
+          <p className="text-[12px] text-center text-slate-400 font-medium">
             PRACTIKA Co-Op • ParqueSoft Meta SGC
           </p>
         </div>
@@ -1086,14 +1086,14 @@ export default function App() {
           </div>
           <div>
             <span className="text-2xl font-bold tracking-tight text-white block leading-none">PRACTIKA</span>
-            <span className="text-[10px] tracking-widest text-orange-300 font-bold block mt-1 uppercase">Alistamiento al Vacío</span>
+            <span className="text-[12px] tracking-widest text-orange-300 font-bold block mt-1 uppercase">Alistamiento al Vacío</span>
           </div>
         </div>
 
         {/* PROFILE HEADER TAG */}
         <div className="hidden lg:flex items-center gap-4">
           <div className="text-right">
-            <span className="text-[10px] bg-white/10 px-2.5 py-0.5 rounded-full text-orange-100 font-black tracking-wider border border-white/5 uppercase block">
+            <span className="text-[12px] bg-white/10 px-2.5 py-0.5 rounded-full text-orange-100 font-black tracking-wider border border-white/5 uppercase block">
               {activeRole === 'cliente' && 'Suscrito / Premium'}
               {activeRole === 'practiker' && 'Certificación HACV'}
               {activeRole === 'admin' && 'Caja Central'}
@@ -1124,7 +1124,7 @@ export default function App() {
               showNotification('Sesión finalizada. Regrese cuando lo desee.', 'info');
             }}
             title="Cerrar Sesión / Salir"
-            className="text-[10px] bg-orange-600 hover:bg-orange-700 px-3 py-1.5 rounded-xl text-white font-black uppercase tracking-wider transition border border-orange-500/35 cursor-pointer leading-none"
+            className="text-[12px] bg-orange-600 hover:bg-orange-700 px-3 py-1.5 rounded-xl text-white font-black uppercase tracking-wider transition border border-orange-500/35 cursor-pointer leading-none"
           >
             Salir
           </button>
@@ -1134,7 +1134,7 @@ export default function App() {
       {/* SUB-HEADER OR ALERT LOGS OF THE COMMUNITY PLATFORM COOPERATIVE */}
       <div className="bg-[#140603] text-slate-300 py-2 px-6 md:px-10 text-xs flex justify-between items-center overflow-x-auto whitespace-nowrap border-b border-orange-950/40">
         <div className="flex items-center gap-4">
-          <span className="text-orange-400 font-black tracking-wider text-[9px] uppercase px-2 py-0.5 rounded bg-orange-500/15 border border-orange-500/20">
+          <span className="text-orange-400 font-black tracking-wider text-[11px] uppercase px-2 py-0.5 rounded bg-orange-500/15 border border-orange-500/20">
             PARQUESOFT META CO-OP
           </span>
           <span className="opacity-90 font-medium">
@@ -1143,7 +1143,7 @@ export default function App() {
             {activeRole === 'admin' && "📊 Panel Directivo - Control de mermas e inocuidad alimentaria."}
           </span>
         </div>
-        <div className="flex items-center gap-4 text-[11px]">
+        <div className="flex items-center gap-4 text-[13px]">
           <span className="flex items-center gap-1.5 text-orange-400 font-semibold">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse"></span>
             Sincronización Multilateral Activa
@@ -1169,7 +1169,7 @@ export default function App() {
                 <p className="text-xs text-slate-400 font-extrabold uppercase tracking-wider mt-1">SGC & CONTROL DE OPERACIONES</p>
                 <div className="mt-3 inline-flex items-center gap-2 px-3 py-1 bg-orange-50 border border-orange-500/10 rounded-full">
                   <span className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span>
-                  <span className="text-[10px] font-bold text-orange-800 uppercase tracking-wide">
+                  <span className="text-[12px] font-bold text-orange-800 uppercase tracking-wide">
                     {activeRole === 'practiker' ? 'Modo Operador de Planta (Practiker / Parking Operator)' : 'Administrativo / Caja Central (Central Cashier)'}
                   </span>
                 </div>
@@ -1184,7 +1184,7 @@ export default function App() {
 
               <form onSubmit={handlePortalLogin} className="space-y-4">
                 <div>
-                  <label className="block text-[10px] font-black text-slate-550 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[12px] font-black text-slate-550 uppercase tracking-widest mb-1.5">
                     Usuario de Acceso
                   </label>
                   <div className="relative">
@@ -1200,7 +1200,7 @@ export default function App() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-slate-555 uppercase tracking-widest mb-1.5">
+                  <label className="block text-[12px] font-black text-slate-555 uppercase tracking-widest mb-1.5">
                     Contraseña de Seguridad
                   </label>
                   <div className="relative">
@@ -1232,10 +1232,10 @@ export default function App() {
 
               {/* DEMO CREDENTIALS TOOLTIP */}
               <div className="mt-5 p-4 bg-orange-50/60 border border-orange-500/10 rounded-2xl">
-                <p className="text-[10px] font-black text-orange-950 uppercase tracking-widest flex items-center gap-1">
+                <p className="text-[12px] font-black text-orange-950 uppercase tracking-widest flex items-center gap-1">
                   🔑 Credenciales Certificadas:
                 </p>
-                <div className="mt-2 text-[11px] text-slate-600 font-medium">
+                <div className="mt-2 text-[13px] text-slate-600 font-medium">
                   {activeRole === 'practiker' ? (
                     <div>
                       <p className="font-bold text-slate-850">Estación Operador (Parking Operator Mode):</p>
@@ -1279,7 +1279,7 @@ export default function App() {
           {activeRole === 'cliente' && (
             <>
               <div id="client-sub-detail-card" className="p-6 bg-gradient-to-b from-orange-50/60 to-orange-50/10 rounded-3xl border border-orange-500/10 shadow-sm relative overflow-hidden">
-                <p className="text-[9px] font-black text-orange-850 uppercase tracking-widest mb-1.5 flex items-center gap-1">
+                <p className="text-[11px] font-black text-orange-850 uppercase tracking-widest mb-1.5 flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500"></span> Tu Suscripción Activa
                 </p>
                 <h3 className="text-lg font-extrabold text-practika">
@@ -1298,7 +1298,7 @@ export default function App() {
                   <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
                     <div className="h-full bg-orange-600 w-2/3 transition-all duration-500"></div>
                   </div>
-                  <p className="text-[10px] text-slate-400 mt-2 font-medium">
+                  <p className="text-[12px] text-slate-400 mt-2 font-medium">
                     Su cupo se renueba el 24 de este mes ($ {selectedSubscription?.priceMonthly.toLocaleString()} COP)
                   </p>
                 </div>
@@ -1306,13 +1306,13 @@ export default function App() {
                 <div className="mt-4 pt-3 border-t border-slate-200/50 flex gap-2">
                   <button 
                     onClick={() => showNotification("Suscripción pausada temporalmente por el ciclo actual.", "info")} 
-                    className="flex-1 text-[10px] font-black bg-slate-200/70 text-slate-600 py-2 rounded-lg hover:bg-slate-200 transition duration-150 uppercase tracking-wider"
+                    className="flex-1 text-[12px] font-black bg-slate-200/70 text-slate-600 py-2 rounded-lg hover:bg-slate-200 transition duration-150 uppercase tracking-wider"
                   >
                     Pausar
                   </button>
                   <button 
                     onClick={() => showNotification("Su suscripción se cancelará al finalizar el período actual.", "warn")} 
-                    className="flex-1 text-[10px] font-black border border-red-200 text-red-600 py-2 rounded-lg hover:bg-red-50 transition duration-150 uppercase tracking-wider"
+                    className="flex-1 text-[12px] font-black border border-red-200 text-red-600 py-2 rounded-lg hover:bg-red-50 transition duration-150 uppercase tracking-wider"
                   >
                     Cancelar
                   </button>
@@ -1333,7 +1333,7 @@ export default function App() {
                     <div className="bg-orange-500/10 border border-orange-500/20 p-4 rounded-2xl">
                       <div className="flex items-center gap-3">
                         <div className="bg-vibrant text-white w-12 h-12 rounded-xl flex flex-col items-center justify-center shrink-0">
-                          <span className="text-[9px] font-bold leading-none">{displayMonth}</span>
+                          <span className="text-[11px] font-bold leading-none">{displayMonth}</span>
                           <span className="text-lg font-black leading-none">{displayDay}</span>
                         </div>
                         <div className="flex-1 min-w-0">
@@ -1341,7 +1341,7 @@ export default function App() {
                           <p className="text-xs font-semibold text-vibrant mt-0.5 flex items-center gap-1">
                             <span>🕒 {deliveryWindow}</span>
                           </p>
-                          <p className="text-[10px] text-slate-500 mt-0.5">
+                          <p className="text-[12px] text-slate-500 mt-0.5">
                             Sede: Villavicencio (Carlos)
                           </p>
                         </div>
@@ -1350,7 +1350,7 @@ export default function App() {
 
                     {/* INTERACTIVE MULTIPLE WINDOWS SELECTOR */}
                     <div className="bg-white border border-slate-200/60 p-4 rounded-2xl shadow-sm">
-                      <p className="text-[10px] font-black text-practika uppercase tracking-widest mb-2.5 flex items-center gap-1">
+                      <p className="text-[12px] font-black text-practika uppercase tracking-widest mb-2.5 flex items-center gap-1">
                         ⏱️ Seleccionar Ventana de Horario
                       </p>
                       
@@ -1373,7 +1373,7 @@ export default function App() {
                                 setDeliveryWindow(slot.value);
                                 showNotification(`Horario de entrega actualizado a las ${slot.value}`, "success");
                               }}
-                              className={`w-full text-left px-2.5 py-1.5 rounded-xl text-[11px] font-bold flex items-center justify-between transition-all duration-200 ${
+                              className={`w-full text-left px-2.5 py-1.5 rounded-xl text-[13px] font-bold flex items-center justify-between transition-all duration-200 ${
                                 isSelected 
                                   ? 'bg-vibrant/15 border border-vibrant text-vibrant shadow-sm' 
                                   : 'bg-slate-50 border border-slate-200/60 text-slate-600 hover:bg-slate-100/80 hover:text-orange-950'
@@ -1393,7 +1393,7 @@ export default function App() {
 
                       {/* Interactive Date Quick Picker */}
                       <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-2">
-                        <label className="text-[9px] font-bold text-slate-400 uppercase tracking-wider shrink-0">
+                        <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider shrink-0">
                           Ajustar Fecha:
                         </label>
                         <input 
@@ -1403,7 +1403,7 @@ export default function App() {
                             setDeliveryDate(e.target.value);
                             showNotification(`Fecha de entrega cambiada al ${e.target.value}`, "info");
                           }}
-                          className="text-[11px] font-bold bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-slate-700 focus:outline-none focus:border-vibrant cursor-pointer"
+                          className="text-[13px] font-bold bg-slate-50 border border-slate-200 rounded-lg px-2 py-1 text-slate-700 focus:outline-none focus:border-vibrant cursor-pointer"
                         />
                       </div>
                     </div>
@@ -1416,7 +1416,7 @@ export default function App() {
                 <div className="absolute right-[-10px] bottom-[-10px] text-white/5 font-black text-8xl pointer-events-none uppercase">
                   Zero
                 </div>
-                <p className="text-[10px] text-[#A6E1E4] mb-1 uppercase font-bold tracking-widest flex items-center gap-1">
+                <p className="text-[12px] text-[#A6E1E4] mb-1 uppercase font-bold tracking-widest flex items-center gap-1">
                   <Heart className="w-3 h-3 text-red-400 fill-red-400" /> Co-Op Ahorro este mes
                 </p>
                 <p className="text-3xl font-black">18h</p>
@@ -1429,7 +1429,7 @@ export default function App() {
             <>
               {/* OPERATOR MANAGER SELECTOR */}
               <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 shadow-sm text-center">
-                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">
+                <p className="text-[12px] font-bold text-slate-500 uppercase tracking-widest mb-2">
                   Identidad del Operario
                 </p>
                 <select 
@@ -1459,7 +1459,7 @@ export default function App() {
                 <h4 className="text-xs font-bold text-practika uppercase tracking-wider mb-2 flex items-center gap-1">
                   <AlertTriangle className="w-3.5 h-3.5 text-amber-500" /> Micro-Inventario
                 </h4>
-                <p className="text-[11px] text-slate-500 mb-3 leading-relaxed">
+                <p className="text-[13px] text-slate-500 mb-3 leading-relaxed">
                   Monitorea tus existencias locales y reporta deficiencias al Chef Central:
                 </p>
                 
@@ -1470,12 +1470,12 @@ export default function App() {
                         <p className="font-bold text-slate-700 truncate">{stock.ingredientName}</p>
                         <div className="flex items-center gap-1.5 mt-0.5">
                           <span className={`w-2 h-2 rounded-full ${stock.stockLevelPercent > 40 ? 'bg-orange-500' : 'bg-red-500'}`}></span>
-                          <span className="text-[10px] font-semibold text-slate-500">{stock.stockLevelPercent}% Disp.</span>
+                          <span className="text-[12px] font-semibold text-slate-500">{stock.stockLevelPercent}% Disp.</span>
                         </div>
                       </div>
                       <button
                         onClick={() => handleReportStockAlert(selectedOperatorId, stock.ingredientName, stock.stockLevelPercent > 10)}
-                        className={`px-2 py-1 rounded text-[9px] font-bold transition ${
+                        className={`px-2 py-1 rounded text-[11px] font-bold transition ${
                           stock.stockLevelPercent > 10 
                             ? 'bg-red-50 text-red-600 hover:bg-red-100' 
                             : 'bg-orange-50 text-orange-600 hover:bg-orange-100'
@@ -1490,14 +1490,14 @@ export default function App() {
 
               {/* GAME STATS BOX */}
               <div className="mt-auto p-4 bg-teal/10 border border-teal/20 rounded-2xl">
-                <p className="text-[10px] font-bold text-teal uppercase tracking-widest mb-1">
+                <p className="text-[12px] font-bold text-teal uppercase tracking-widest mb-1">
                   Bono de Calidad Co-Op
                 </p>
                 <div className="flex justify-between items-baseline">
                   <span className="text-2xl font-black text-practika">$125K</span>
                   <span className="text-xs text-slate-500 font-semibold">Consolidado</span>
                 </div>
-                <p className="text-[10px] text-slate-500 mt-1 leading-snug">
+                <p className="text-[12px] text-slate-500 mt-1 leading-snug">
                   Mantener mermas debajo del 3% y vacíos perfectos genera bonos colectivos.
                 </p>
               </div>
@@ -1520,11 +1520,11 @@ export default function App() {
             <>
               {/* BRAND ADVERT CONSOLE */}
               <div className="p-4 bg-practika text-white rounded-2xl relative overflow-hidden">
-                <p className="text-[9px] font-bold tracking-widest text-teal uppercase mb-1">
+                <p className="text-[11px] font-bold tracking-widest text-teal uppercase mb-1">
                   SGC Chef Álvaro Estructura
                 </p>
                 <h4 className="text-md font-extrabold">ParqueSoft Meta Allied</h4>
-                <p className="text-[10px] text-slate-300 mt-1 leading-relaxed">
+                <p className="text-[12px] text-slate-300 mt-1 leading-relaxed">
                   Sistema de Gestión de Calidad basado en trazabilidad de lote por peso y calibre de aire restrenado.
                 </p>
               </div>
@@ -1537,27 +1537,27 @@ export default function App() {
                 {metrics ? (
                   <div className="space-y-3">
                     <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-                      <p className="text-[10px] font-bold text-slate-500 uppercase">Facturación Mensual</p>
+                      <p className="text-[12px] font-bold text-slate-500 uppercase">Facturación Mensual</p>
                       <div className="text-lg font-black text-practika mt-0.5">
                         $ {metrics.totalRevenueMonthly.toLocaleString()} COP
                       </div>
-                      <span className="text-[10px] text-orange-600 font-semibold">↑ 14.5% vs Mes Ant.</span>
+                      <span className="text-[12px] text-orange-600 font-semibold">↑ 14.5% vs Mes Ant.</span>
                     </div>
 
                     <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-                      <p className="text-[10px] font-bold text-slate-500 uppercase">Suscripciones Activas</p>
+                      <p className="text-[12px] font-bold text-slate-500 uppercase">Suscripciones Activas</p>
                       <div className="text-lg font-black text-practika mt-0.5">
                         {metrics.activeSubscriptionsCount} Hogares
                       </div>
-                      <span className="text-[10px] text-teal font-semibold">Retención: {metrics.customerRetentionRate}%</span>
+                      <span className="text-[12px] text-teal font-semibold">Retención: {metrics.customerRetentionRate}%</span>
                     </div>
 
                     <div className="p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-                      <p className="text-[10px] font-bold text-slate-500 uppercase">CAC Promedio (Costo Adq)</p>
+                      <p className="text-[12px] font-bold text-slate-500 uppercase">CAC Promedio (Costo Adq)</p>
                       <div className="text-lg font-black text-practika mt-0.5">
                         $ {metrics.averageCAC.toLocaleString()} COP
                       </div>
-                      <span className="text-[10px] text-slate-400">Objetivo: Menor a $50K</span>
+                      <span className="text-[12px] text-slate-400">Objetivo: Menor a $50K</span>
                     </div>
                   </div>
                 ) : (
@@ -1582,10 +1582,10 @@ export default function App() {
           {/* ACCESOS PARA PERSONAL AUTORIZADO (EXC. ADMIN CUANDO YA ESTÁ LOGUEADO) */}
           {activeRole === 'cliente' && (
             <div id="authorized-personnel-panel" className="bg-slate-50 border border-slate-200 p-4.5 rounded-[1.8rem] flex flex-col gap-2.5 shadow-none mt-2">
-              <h5 className="text-[10px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1">
+              <h5 className="text-[12px] font-black text-slate-500 uppercase tracking-widest flex items-center gap-1">
                 🔒 Personal Autorizado
               </h5>
-              <p className="text-[10px] text-slate-500 leading-normal mb-1">
+              <p className="text-[12px] text-slate-500 leading-normal mb-1">
                 Ingresa aquí si eres un operador de planta o personal de operaciones.
               </p>
               <div className="flex flex-col gap-1.5">
@@ -1594,7 +1594,7 @@ export default function App() {
                     setActiveRole('practiker');
                     showNotification('Iniciando estación de Operario de Planta...', 'info');
                   }}
-                  className="w-full bg-[#14b8a6]/10 hover:bg-[#14b8a6]/20 text-[#0d9488] text-[10px] font-black py-2 rounded-xl transition duration-150 flex items-center justify-center gap-1.5 uppercase tracking-wide border border-[#14b8a6]/15 cursor-pointer"
+                  className="w-full bg-[#14b8a6]/10 hover:bg-[#14b8a6]/20 text-[#0d9488] text-[12px] font-black py-2 rounded-xl transition duration-150 flex items-center justify-center gap-1.5 uppercase tracking-wide border border-[#14b8a6]/15 cursor-pointer"
                 >
                   <ChefHat className="w-3.5 h-3.5" /> Estación Operario
                 </button>
@@ -1603,7 +1603,7 @@ export default function App() {
                     setActiveRole('admin');
                     showNotification('Iniciando portal de Caja Central / SGC...', 'info');
                   }}
-                  className="w-full bg-orange-500/10 hover:bg-orange-500/20 text-orange-700 text-[10px] font-black py-2 rounded-xl transition duration-150 flex items-center justify-center gap-1.5 uppercase tracking-wide border border-orange-500/15 cursor-pointer"
+                  className="w-full bg-orange-500/10 hover:bg-orange-500/20 text-orange-700 text-[12px] font-black py-2 rounded-xl transition duration-150 flex items-center justify-center gap-1.5 uppercase tracking-wide border border-orange-500/15 cursor-pointer"
                 >
                   <Database className="w-3.5 h-3.5" /> Caja Central / SGC
                 </button>
@@ -1620,15 +1620,15 @@ export default function App() {
                 </div>
                 <div>
                   <h5 className="text-xs font-black text-practika leading-tight">Asistente del Chef Álvaro</h5>
-                  <p className="text-[9px] text-orange-700 font-bold uppercase tracking-widest mt-0.5">Powered by Gemini AI</p>
+                  <p className="text-[11px] text-orange-700 font-bold uppercase tracking-widest mt-0.5">Powered by Gemini AI</p>
                 </div>
               </div>
-              <p className="text-[11px] text-practika/80 leading-normal">
+              <p className="text-[13px] text-practika/80 leading-normal">
                 ¿Tienes dudas con el choque térmico o la hermeticidad al vacío en tu cocina?
               </p>
               <button
                 onClick={() => setIsAssistantOpen(true)}
-                className="w-full bg-practika hover:bg-orange-600 text-white text-[10px] font-black py-2.5 rounded-xl transition-all duration-200 shadow-sm hover:shadow-orange-500/10 flex items-center justify-center gap-1 uppercase tracking-widest"
+                className="w-full bg-practika hover:bg-orange-600 text-white text-[12px] font-black py-2.5 rounded-xl transition-all duration-200 shadow-sm hover:shadow-orange-500/10 flex items-center justify-center gap-1 uppercase tracking-widest"
               >
                 <Sparkles className="w-3.5 h-3.5 text-orange-350" /> Preguntar al Chef AI
               </button>
@@ -1649,7 +1649,7 @@ export default function App() {
                   SOUS
                 </div>
                 <div className="max-w-xl relative z-10">
-                  <span className="bg-vibrant/90 text-[10px] tracking-widest text-white px-2.5 py-1 rounded-full font-black uppercase inline-block mb-3">
+                  <span className="bg-vibrant/90 text-[12px] tracking-widest text-white px-2.5 py-1 rounded-full font-black uppercase inline-block mb-3">
                     Estándares de Economía Colaborativa
                   </span>
                   <h2 className="text-3xl md:text-4xl font-extrabold leading-tight tracking-tight mb-2">
@@ -1663,11 +1663,11 @@ export default function App() {
                   <div className="flex items-center gap-6 mt-4">
                     <div className="text-center bg-white/10 px-4 py-2 rounded-2xl backdrop-blur-sm border border-white/10">
                       <span className="block text-xl font-bold">100%</span>
-                      <span className="text-[9px] text-orange-200 uppercase font-bold tracking-wider">Inocuidad HACCP</span>
+                      <span className="text-[11px] text-orange-200 uppercase font-bold tracking-wider">Inocuidad HACCP</span>
                     </div>
                     <div className="text-center bg-white/10 px-4 py-2 rounded-2xl backdrop-blur-sm border border-white/10">
                       <span className="block text-xl font-bold">3 Días</span>
-                      <span className="text-[9px] text-orange-200 uppercase font-bold tracking-wider">De Entrega Máx.</span>
+                      <span className="text-[11px] text-orange-200 uppercase font-bold tracking-wider">De Entrega Máx.</span>
                     </div>
                   </div>
                 </div>
@@ -1726,10 +1726,10 @@ export default function App() {
                             <div>
                               <div className="h-28 bg-orange-50/40 rounded-2xl mb-4 relative overflow-hidden flex items-center justify-center border border-orange-500/10">
                                 <span className="text-4xl filter drop-shadow group-hover:scale-110 transition-transform duration-300 select-none">{emoji}</span>
-                                <div className="absolute top-2 right-2 bg-orange-600/10 text-orange-850 backdrop-blur-sm px-2 py-0.5 rounded-lg text-[9px] font-extrabold uppercase tracking-widest">
+                                <div className="absolute top-2 right-2 bg-orange-600/10 text-orange-850 backdrop-blur-sm px-2 py-0.5 rounded-lg text-[11px] font-extrabold uppercase tracking-widest">
                                   {p.category}
                                 </div>
-                                <div className="absolute bottom-2 left-2 bg-practika/90 text-white px-2 py-0.5 rounded-lg text-[9px] font-bold shadow-sm">
+                                <div className="absolute bottom-2 left-2 bg-practika/90 text-white px-2 py-0.5 rounded-lg text-[11px] font-bold shadow-sm">
                                   {p.weightGrams}g / {p.unit}
                                 </div>
                               </div>
@@ -1743,7 +1743,7 @@ export default function App() {
 
                             <div className="pt-3 border-t border-slate-100 flex justify-between items-center mt-auto">
                               <div>
-                                <span className="text-[10px] text-slate-400 block leading-none uppercase font-bold tracking-wider">Precio</span>
+                                <span className="text-[12px] text-slate-400 block leading-none uppercase font-bold tracking-wider">Precio</span>
                                 <span className="font-black text-lg text-practika">$ {p.price.toLocaleString()} COP</span>
                               </div>
                               
@@ -1805,10 +1805,10 @@ export default function App() {
                         >
                           <div>
                             <p className="text-xs font-extrabold text-practika">{sub.name}</p>
-                            <span className="text-[10px] text-slate-500 font-medium">Ciclo: {sub.deliveryFrequency}</span>
+                            <span className="text-[12px] text-slate-500 font-medium">Ciclo: {sub.deliveryFrequency}</span>
                           </div>
                           <span className="text-xs font-black text-vibrant">
-                            $ {Math.round(sub.priceMonthly / 1000)}k <span className="text-[9px] text-slate-400 font-normal">/mes</span>
+                            $ {Math.round(sub.priceMonthly / 1000)}k <span className="text-[11px] text-slate-400 font-normal">/mes</span>
                           </span>
                         </div>
                       ))}
@@ -1822,7 +1822,7 @@ export default function App() {
                         <h4 className="text-xs font-black text-practika uppercase tracking-wider flex items-center gap-1">
                           <ShoppingBag className="w-4 h-4 text-vibrant" /> Tu Canasta de Alistamiento
                         </h4>
-                        <span className="bg-indigo-100 text-indigo-700 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                        <span className="bg-indigo-100 text-indigo-700 text-[12px] px-2 py-0.5 rounded-full font-bold">
                           {cart.reduce((s, c) => s + c.q, 0)} items
                         </span>
                       </div>
@@ -1833,7 +1833,7 @@ export default function App() {
                             <div key={i} className="flex justify-between items-center text-xs p-2 bg-white rounded-lg border border-slate-100">
                               <div className="truncate">
                                 <p className="font-extrabold text-slate-800 truncate">{item.product.name}</p>
-                                <p className="text-[10px] text-slate-400">{item.product.weightGrams}g x {item.q} packs</p>
+                                <p className="text-[12px] text-slate-400">{item.product.weightGrams}g x {item.q} packs</p>
                               </div>
                               <span className="font-bold text-slate-700 shrink-0 select-none ml-2">
                                 $ {(item.product.price * item.q).toLocaleString()} COP
@@ -1845,7 +1845,7 @@ export default function App() {
                         <div className="flex flex-col items-center justify-center py-10 text-center bg-white/50 rounded-xl mb-4 border border-dashed border-slate-200">
                           <CartIcon className="w-8 h-8 text-slate-300 mb-2" />
                           <p className="text-xs font-medium text-slate-500">No has seleccionado ítems individuales.</p>
-                          <p className="text-[10px] text-slate-400 px-4 mt-1">
+                          <p className="text-[12px] text-slate-400 px-4 mt-1">
                             Añade bases y proteínas del catálogo para programar tu entrega.
                           </p>
                         </div>
@@ -1853,7 +1853,7 @@ export default function App() {
 
                       {/* DELIVERY WINDOW CONFIG */}
                       <div className="pt-3 border-t border-indigo-100 space-y-2">
-                        <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                        <label className="block text-[12px] font-bold text-slate-500 uppercase tracking-wider">
                           Dirección de Entrega
                         </label>
                         <input 
@@ -1865,7 +1865,7 @@ export default function App() {
 
                         <div className="grid grid-cols-2 gap-2 mt-2">
                           <div>
-                            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                            <label className="block text-[12px] font-bold text-slate-500 uppercase tracking-wider">
                               Fecha Entrega
                             </label>
                             <input 
@@ -1876,7 +1876,7 @@ export default function App() {
                             />
                           </div>
                           <div>
-                            <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                            <label className="block text-[12px] font-bold text-slate-500 uppercase tracking-wider">
                               Ventana Horaria
                             </label>
                             <select 
@@ -1938,11 +1938,11 @@ export default function App() {
                 <div className="flex gap-2">
                   <div className="bg-white/10 px-4 py-2 rounded-xl text-center">
                     <span className="block text-lg font-black">{orders.filter(o => o.status === 'pendiente').length}</span>
-                    <span className="text-[9px] text-[#A6E1E4] uppercase">Pendientes</span>
+                    <span className="text-[11px] text-[#A6E1E4] uppercase">Pendientes</span>
                   </div>
                   <div className="bg-white/10 px-4 py-2 rounded-xl text-center">
                     <span className="block text-lg font-black">{orders.filter(o => o.status === 'preparando' && o.operatorId === selectedOperatorId).length}</span>
-                    <span className="text-[9px] text-[#A6E1E4] uppercase">En Cocina</span>
+                    <span className="text-[11px] text-[#A6E1E4] uppercase">En Cocina</span>
                   </div>
                 </div>
               </div>
@@ -1960,20 +1960,20 @@ export default function App() {
                   <div className="space-y-3">
                     {orders.filter(o => o.status === 'pendiente').length > 0 ? (
                       <div>
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider mb-2">Pedidos Disponibles para Tomar</p>
+                        <p className="text-[12px] font-black text-slate-400 uppercase tracking-wider mb-2">Pedidos Disponibles para Tomar</p>
                         {orders.filter(o => o.status === 'pendiente').map(order => (
                           <div key={order.id} className="p-4 bg-orange-50/50 border border-orange-200/80 rounded-2xl flex flex-col justify-between gap-3 shadow-sm hover:bg-orange-50 transition">
                             <div>
                               <div className="flex justify-between items-center mb-1">
                                 <span className="font-extrabold text-xs text-practika">{order.id}</span>
-                                <span className="bg-amber-100 text-amber-800 text-[9px] px-2 py-0.5 rounded-full font-bold">Pendiente</span>
+                                <span className="bg-amber-100 text-amber-800 text-[11px] px-2 py-0.5 rounded-full font-bold">Pendiente</span>
                               </div>
                               <p className="text-xs font-bold text-slate-700">{order.clientName}</p>
-                              <p className="text-[11px] text-slate-500 line-clamp-1">{order.clientAddress}</p>
+                              <p className="text-[13px] text-slate-500 line-clamp-1">{order.clientAddress}</p>
                               
                               <div className="mt-2 space-y-1">
                                 {order.items.map((it, idx) => (
-                                  <span key={idx} className="inline-block bg-white text-slate-600 text-[10px] px-1.5 py-0.5 rounded border border-slate-200/60 mr-1 mt-1">
+                                  <span key={idx} className="inline-block bg-white text-slate-600 text-[12px] px-1.5 py-0.5 rounded border border-slate-200/60 mr-1 mt-1">
                                     {it.quantity}x {it.name}
                                   </span>
                                 ))}
@@ -1981,7 +1981,7 @@ export default function App() {
                             </div>
                             <button
                               onClick={() => handleClaimOrder(order.id)}
-                              className="w-full bg-vibrant hover:bg-vibrant/90 text-white text-[10px] font-extrabold py-2 rounded-xl transition uppercase"
+                              className="w-full bg-vibrant hover:bg-vibrant/90 text-white text-[12px] font-extrabold py-2 rounded-xl transition uppercase"
                             >
                               Tomar Pedido y Preparar
                             </button>
@@ -1993,7 +1993,7 @@ export default function App() {
                     )}
 
                     {/* ASSIGNED ACTIVE WORKFLOW */}
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-wider mt-4 mb-2">Tus Tareas Asignadas</p>
+                    <p className="text-[12px] font-black text-slate-400 uppercase tracking-wider mt-4 mb-2">Tus Tareas Asignadas</p>
                     {orders.filter(o => o.operatorId === selectedOperatorId && o.status !== 'entregado').length > 0 ? (
                       orders.filter(o => o.operatorId === selectedOperatorId && o.status !== 'entregado').map(order => (
                         <div 
@@ -2006,14 +2006,14 @@ export default function App() {
                         >
                           <div className="flex justify-between items-center mb-1">
                             <span className="font-extrabold text-xs text-practika">{order.id}</span>
-                            <span className={`text-[9px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                            <span className={`text-[11px] px-2 py-0.5 rounded-full font-bold uppercase ${
                               order.status === 'preparando' ? 'bg-teal text-white' : 'bg-slate-100 text-slate-600'
                             }`}>
                               {order.status === 'asignado' ? 'Asignado' : order.status === 'empaque_listo' ? 'Empacado OK' : 'Preparando'}
                             </span>
                           </div>
                           <p className="text-xs font-bold text-slate-700">{order.clientName}</p>
-                          <p className="text-[10px] text-slate-400 mt-0.5 font-medium">Ventana: {order.scheduledDeliveryDate} ({order.deliveryWindow})</p>
+                          <p className="text-[12px] text-slate-400 mt-0.5 font-medium">Ventana: {order.scheduledDeliveryDate} ({order.deliveryWindow})</p>
                           
                           {/* LIST ITEMS */}
                           <div className="my-2 border-t border-b border-dashed border-slate-200 py-2 space-y-1">
@@ -2028,7 +2028,7 @@ export default function App() {
                           {order.status === 'asignado' && (
                             <button
                               onClick={() => handleStartPreparation(order.id)}
-                              className="w-full bg-practika text-white text-[10px] font-extrabold py-2 rounded-xl transition uppercase tracking-widest mt-2"
+                              className="w-full bg-practika text-white text-[12px] font-extrabold py-2 rounded-xl transition uppercase tracking-widest mt-2"
                             >
                               Iniciar Cocina Guiada
                             </button>
@@ -2039,7 +2039,7 @@ export default function App() {
                               onClick={() => {
                                 handleStartPreparation(order.id);
                               }}
-                              className="w-full border border-teal text-teal text-[10px] font-extrabold py-2 rounded-xl transition uppercase mt-2 hover:bg-teal/5"
+                              className="w-full border border-teal text-teal text-[12px] font-extrabold py-2 rounded-xl transition uppercase mt-2 hover:bg-teal/5"
                             >
                               Ver Receta Activa
                             </button>
@@ -2066,7 +2066,7 @@ export default function App() {
                         {/* RECIPE HEADER */}
                         <div className="flex flex-col md:flex-row md:items-center justify-between border-b pb-4 mb-4 gap-2">
                           <div>
-                            <span className="text-[9px] font-black bg-teal/20 text-teal-800 px-2 py-0.5 rounded uppercase tracking-wider">
+                            <span className="text-[11px] font-black bg-teal/20 text-teal-800 px-2 py-0.5 rounded uppercase tracking-wider">
                               Fórmula Estándar # {selectedRecipe.id}
                             </span>
                             <h4 className="text-xl font-bold text-practika mt-1">
@@ -2077,14 +2077,14 @@ export default function App() {
                             </p>
                           </div>
                           <div className="bg-white px-3 py-1.5 rounded-xl border border-slate-200 text-center shrink-0">
-                            <span className="block text-[9px] font-bold text-slate-400 uppercase">Tiempo Culinario</span>
+                            <span className="block text-[11px] font-bold text-slate-400 uppercase">Tiempo Culinario</span>
                             <span className="text-md font-extrabold text-practika">{selectedRecipe.prepTimeMinutes} mins</span>
                           </div>
                         </div>
 
                         {/* INGREDIENTS CHECKLIST GRID */}
                         <div className="mb-4">
-                          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Ingredientes de Precisión requeridos:</p>
+                          <p className="text-[12px] font-black text-slate-500 uppercase tracking-widest mb-2">Ingredientes de Precisión requeridos:</p>
                           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                             {selectedRecipe.ingredients.map((ing, i) => (
                               <div key={i} className="bg-white border border-slate-200 px-3 py-1.5 rounded-xl text-xs flex justify-between">
@@ -2098,7 +2098,7 @@ export default function App() {
                         {/* WORKFLOW STEPS PROGRESS */}
                         <div className="mb-6">
                           <div className="flex justify-between items-center mb-2">
-                            <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Ejecución del Lote ({currentStepIndex + 1} de {selectedRecipe.steps.length})</span>
+                            <span className="text-[12px] font-black text-slate-500 uppercase tracking-widest">Ejecución del Lote ({currentStepIndex + 1} de {selectedRecipe.steps.length})</span>
                             <span className="text-xs font-extrabold text-teal">
                               {Math.round(((currentStepIndex) / selectedRecipe.steps.length) * 100)}% Completado
                             </span>
@@ -2125,7 +2125,7 @@ export default function App() {
                               </div>
                               <div className="flex-1">
                                 {selectedRecipe.steps[currentStepIndex].isCriticalQualityPoint && (
-                                  <span className="bg-red-50 text-red-600 text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded inline-block mb-1 flex-row items-center gap-1">
+                                  <span className="bg-red-50 text-red-600 text-[11px] font-black uppercase tracking-wider px-2 py-0.5 rounded inline-block mb-1 flex-row items-center gap-1">
                                     🚨 Punto Crítico de Control Alimentario (Inocuidad SGC)
                                   </span>
                                 )}
@@ -2165,13 +2165,13 @@ export default function App() {
 
                         {/* TELEMETRY HACCP RECORD SIGNATURE FORM */}
                         <div className="p-5 bg-teal/10 rounded-2xl border border-teal/20 space-y-4">
-                          <p className="text-[10px] font-black text-practika uppercase tracking-wider flex items-center gap-1">
+                          <p className="text-[12px] font-black text-practika uppercase tracking-wider flex items-center gap-1">
                             <Activity className="w-4 h-4 text-vibrant" /> Registro Teletérmico de Hermeticidad al Vacío
                           </p>
 
                           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                             <div>
-                              <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                              <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
                                 <Weight className="w-3 h-3 text-slate-400" /> Peso Neto (g)
                               </label>
                               <input 
@@ -2183,7 +2183,7 @@ export default function App() {
                             </div>
 
                             <div>
-                              <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                              <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
                                 <Gauge className="w-3 h-3 text-slate-400" /> Presión de Aire (%)
                               </label>
                               <input 
@@ -2197,7 +2197,7 @@ export default function App() {
                                 }`}
                               />
                               {haccpLimits && (
-                                <div className="mt-1.5 flex flex-col gap-0.5 text-[9px]">
+                                <div className="mt-1.5 flex flex-col gap-0.5 text-[11px]">
                                   <span className="text-slate-400 font-semibold">Mínimo seguro: {haccpLimits.minPressure.toFixed(1)}%</span>
                                   <span className={`font-black uppercase tracking-wider ${haccpLimits.isPressureOk ? 'text-orange-600' : 'text-red-600 animate-pulse'}`}>
                                     {haccpLimits.isPressureOk ? '🟢 Conforme' : '🚨 Fuera de Rango'}
@@ -2207,7 +2207,7 @@ export default function App() {
                             </div>
 
                             <div>
-                              <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                              <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
                                 <Thermometer className="w-3 h-3 text-slate-400" /> Calor Barra (°C)
                               </label>
                               <input 
@@ -2221,7 +2221,7 @@ export default function App() {
                                 }`}
                               />
                               {haccpLimits && (
-                                <div className="mt-1.5 flex flex-col gap-0.5 text-[9px]">
+                                <div className="mt-1.5 flex flex-col gap-0.5 text-[11px]">
                                   <span className="text-slate-400 font-semibold">Tolerancia: {haccpLimits.minTemp}°C - {haccpLimits.maxTemp}°C</span>
                                   <span className={`font-black uppercase tracking-wider ${haccpLimits.isTempOk ? 'text-orange-600' : 'text-red-600 animate-pulse'}`}>
                                     {haccpLimits.isTempOk ? '🟢 Conforme' : '🚨 Fuera de Rango'}
@@ -2231,7 +2231,7 @@ export default function App() {
                             </div>
 
                             <div>
-                              <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
+                              <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
                                 <Clock className="w-3 h-3 text-slate-400" /> Soldadura (s)
                               </label>
                               <input 
@@ -2243,7 +2243,7 @@ export default function App() {
                             </div>
                           </div>
 
-                          <div className="bg-white/60 p-2.5 rounded-xl border border-slate-200 text-[10px] text-slate-500 leading-tight">
+                          <div className="bg-white/60 p-2.5 rounded-xl border border-slate-200 text-[12px] text-slate-500 leading-tight">
                             <span className="font-extrabold text-slate-700">Especificación de empaque para esta categoría:</span> {selectedRecipe.vacuumSpecification.packagingType}. Sellar a vacío absoluto para retener jugos culinarios.
                           </div>
                         </div>
@@ -2255,13 +2255,13 @@ export default function App() {
                         <div className="mt-4 p-4.5 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-3 animate-fade-in">
                           <AlertTriangle className="w-5 h-5 text-red-600 shrink-0 mt-0.5 animate-bounce" />
                           <div className="text-xs text-red-800 leading-normal">
-                            <p className="font-extrabold text-red-900 uppercase tracking-widest text-[9px]">
+                            <p className="font-extrabold text-red-900 uppercase tracking-widest text-[11px]">
                               ⚠️ Bloqueo de Inocuidad HACCP Activo
                             </p>
                             <p className="font-medium mt-1">
                               Los valores ingresados no garantizan un acoplamiento hermético estéril. Corrija los parámetros en la selladora al vacío e intente de nuevo.
                             </p>
-                            <ul className="list-disc pl-4 mt-1.5 space-y-0.5 text-[11px] font-semibold text-red-700">
+                            <ul className="list-disc pl-4 mt-1.5 space-y-0.5 text-[13px] font-semibold text-red-700">
                               {!haccpLimits.isPressureOk && (
                                 <li>
                                   Presión de aire: {haccpLimits.parsedPressure}% (Debe estar entre {haccpLimits.minPressure.toFixed(1)}% y 100% para evitar aire residual).
@@ -2336,7 +2336,7 @@ export default function App() {
                   <div className="bg-white border border-slate-200/60 p-6 rounded-3xl flex flex-col md:flex-row gap-4 items-end shadow-sm">
                     {/* Por Cliente */}
                     <div className="w-full md:flex-1 font-sans animate-fade-in">
-                      <label className="block text-[10px] font-black text-practika uppercase tracking-wider mb-2">
+                      <label className="block text-[12px] font-black text-practika uppercase tracking-wider mb-2">
                         🔎 Buscar Cliente / Domicilio
                       </label>
                       <input
@@ -2350,7 +2350,7 @@ export default function App() {
 
                     {/* Por Estado */}
                     <div className="w-full md:w-56 font-sans">
-                      <label className="block text-[10px] font-black text-practika uppercase tracking-wider mb-2">
+                      <label className="block text-[12px] font-black text-practika uppercase tracking-wider mb-2">
                         ⚙️ Estado de Logística
                       </label>
                       <select
@@ -2369,7 +2369,7 @@ export default function App() {
 
                     {/* Por Fecha de Entrega */}
                     <div className="w-full md:w-48 font-sans">
-                      <label className="block text-[10px] font-black text-practika uppercase tracking-wider mb-2">
+                      <label className="block text-[12px] font-black text-practika uppercase tracking-wider mb-2">
                         📅 Fecha de Entrega
                       </label>
                       <input
@@ -2400,7 +2400,7 @@ export default function App() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
-                          <tr className="border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[10px]">
+                          <tr className="border-b border-slate-200 text-slate-400 font-bold uppercase tracking-wider text-[12px]">
                             <th className="py-3 px-2">ID Pedido</th>
                             <th className="py-3 px-2">Cliente / Domicilio</th>
                             <th className="py-3 px-2">Detalle Insumo</th>
@@ -2422,12 +2422,12 @@ export default function App() {
                                 <td className="py-3.5 px-2 font-bold text-practika">{o.id}</td>
                                 <td className="py-3.5 px-2">
                                   <span className="font-extrabold text-slate-800 block">{o.clientName}</span>
-                                  <span className="text-[10px] text-slate-500 block truncate max-w-[150px]">{o.clientAddress}</span>
+                                  <span className="text-[12px] text-slate-500 block truncate max-w-[150px]">{o.clientAddress}</span>
                                 </td>
                                 <td className="py-3.5 px-2">
                                   <div className="space-x-1">
                                     {o.items.map((it, idx) => (
-                                      <span key={idx} className="inline-block bg-white border border-slate-200 text-[10px] px-1 rounded text-slate-600">
+                                      <span key={idx} className="inline-block bg-white border border-slate-200 text-[12px] px-1 rounded text-slate-600">
                                         {it.quantity}x {it.name.split(' ')[0]}
                                       </span>
                                     ))}
@@ -2437,7 +2437,7 @@ export default function App() {
                                   {o.operatorName ? JSON.stringify(o.operatorName).replace(/"/g, '') : '-'}
                                 </td>
                                 <td className="py-3.5 px-3">
-                                  <span className={`text-[10px] px-2.5 py-0.5 rounded-full font-bold uppercase ${badgeClass}`}>
+                                  <span className={`text-[12px] px-2.5 py-0.5 rounded-full font-bold uppercase ${badgeClass}`}>
                                     {o.status}
                                   </span>
                                 </td>
@@ -2445,21 +2445,21 @@ export default function App() {
                                   {o.status === 'empaque_listo' && (
                                     <button
                                       onClick={() => handleDeliver(o.id)}
-                                      className="bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-[9px] uppercase px-2.5 py-1 rounded shadow-sm transition"
+                                      className="bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-[11px] uppercase px-2.5 py-1 rounded shadow-sm transition"
                                     >
                                       Despachar
                                     </button>
                                   )}
                                   {o.status === 'entregado' && (
-                                    <span className="text-[10px] text-slate-400 font-extrabold flex items-center justify-end gap-1">
+                                    <span className="text-[12px] text-slate-400 font-extrabold flex items-center justify-end gap-1">
                                       <Check className="w-3.5 h-3.5 text-orange-500" /> Entregado
                                     </span>
                                   )}
                                   {o.status === 'pendiente' && (
-                                    <span className="text-[10px] text-amber-500 font-bold">Esperando Operador</span>
+                                    <span className="text-[12px] text-amber-500 font-bold">Esperando Operador</span>
                                   )}
                                   {o.status === 'preparando' && (
-                                    <span className="text-[10px] text-teal font-semibold">En Campana Vacío</span>
+                                    <span className="text-[12px] text-teal font-semibold">En Campana Vacío</span>
                                   )}
                                 </td>
                               </tr>
@@ -2492,12 +2492,12 @@ export default function App() {
                           <div>
                             <div className="flex justify-between items-center mb-1">
                               <span className="font-extrabold text-practika">{op.name}</span>
-                              <span className="bg-orange-100 text-orange-850 text-[9px] px-1.5 py-0.5 rounded uppercase font-bold">Certificado OK</span>
+                              <span className="bg-orange-100 text-orange-850 text-[11px] px-1.5 py-0.5 rounded uppercase font-bold">Certificado OK</span>
                             </div>
-                            <span className="text-[10px] text-slate-500 font-semibold">{op.locationName}</span>
+                            <span className="text-[12px] text-slate-500 font-semibold">{op.locationName}</span>
                           </div>
                           
-                          <div className="flex justify-between text-[11px] border-t border-dashed border-slate-200/80 pt-2 text-slate-600 font-mono">
+                          <div className="flex justify-between text-[13px] border-t border-dashed border-slate-200/80 pt-2 text-slate-600 font-mono">
                             <span>Suministros: Normal {op.rawIngredientsStock.filter(s=>s.stockLevelPercent > 15).length} / {op.rawIngredientsStock.length}</span>
                             <span>Rating: <strong className="text-amber-500 font-sans">★ {op.rating}</strong></span>
                           </div>
@@ -2517,10 +2517,10 @@ export default function App() {
                   <div className="p-6 bg-slate-50 border-2 border-vibrant rounded-[2.5rem] shadow-vibrant flex-1 flex flex-col justify-between">
                     <div>
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="bg-vibrant text-white text-[10px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full">
+                        <span className="bg-vibrant text-white text-[12px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full">
                           Motor Cognitivo De Compra
                         </span>
-                        <span className="text-[10px] font-bold text-[#FF6B35]">Chef AI</span>
+                        <span className="text-[12px] font-bold text-[#FF6B35]">Chef AI</span>
                       </div>
                       
                       <h4 className="text-xl font-extrabold text-practika mb-2">
@@ -2551,7 +2551,7 @@ export default function App() {
                       {demandPrediction && (
                         <div className="mt-5 space-y-4">
                           <div className="bg-white p-3 rounded-xl border border-slate-200">
-                            <span className="block text-[9px] font-black text-slate-400 uppercase tracking-widest">Aprovisionamientos Previstos</span>
+                            <span className="block text-[11px] font-black text-slate-400 uppercase tracking-widest">Aprovisionamientos Previstos</span>
                             <div className="mt-2 space-y-1.5 text-xs">
                               {demandPrediction.rawMaterialsNeeded.map((item, i) => (
                                 <div key={i} className="flex justify-between py-1 border-b border-slate-50">
@@ -2570,7 +2570,7 @@ export default function App() {
 
                           {/* SYSTEM RECOMMENDATIONS AI REPORT */}
                           <div className="bg-white p-4 rounded-xl border border-dashed border-vibrant/40 max-h-56 overflow-y-auto pr-1">
-                            <h5 className="text-[10px] font-bold text-vibrant uppercase tracking-wider mb-2 flex items-center gap-1">
+                            <h5 className="text-[12px] font-bold text-vibrant uppercase tracking-wider mb-2 flex items-center gap-1">
                               📬 Recomendaciones de Optimización de Margen
                             </h5>
                             <div className="text-xs text-slate-600 leading-relaxed font-medium">
@@ -2585,7 +2585,7 @@ export default function App() {
                       <div className="py-14 text-center text-slate-400 mt-6 bg-white/40 border border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center">
                         <TrendingUp className="w-10 h-10 text-slate-300 mb-2" />
                         <p className="text-xs font-bold">Motor Inactivo</p>
-                        <span className="text-[10px] text-slate-400 mt-0.5 max-w-xs block px-4 leading-normal">
+                        <span className="text-[12px] text-slate-400 mt-0.5 max-w-xs block px-4 leading-normal">
                           Detona el motor arriba para predecir gramos necesarios de ajo, carnes y empaques.
                         </span>
                       </div>
@@ -2619,7 +2619,7 @@ export default function App() {
             Comunidad
           </div>
         </div>
-        <div className="flex items-center gap-4 text-slate-400 font-semibold text-[10px] md:text-xs">
+        <div className="flex items-center gap-4 text-slate-400 font-semibold text-[12px] md:text-xs">
           <span>Desarrollado en alianza con</span>
           <div className="flex items-center gap-1 font-extrabold text-slate-600">
             <div className="w-4 h-4 bg-practika rounded-sm"></div> 
@@ -2647,7 +2647,7 @@ export default function App() {
                 </div>
                 <div>
                   <h3 className="text-lg font-black leading-tight">Panel Administrativo Secreto</h3>
-                  <p className="text-[10px] text-orange-200 font-extrabold uppercase tracking-widest mt-0.5">Control de Roles y Generación de Credenciales</p>
+                  <p className="text-[12px] text-orange-200 font-extrabold uppercase tracking-widest mt-0.5">Control de Roles y Generación de Credenciales</p>
                 </div>
               </div>
               <button
@@ -2690,7 +2690,7 @@ export default function App() {
                     <ChefHat className={`w-5 h-5 shrink-0 mt-0.5 ${activeRole === 'practiker' ? 'text-white' : 'text-teal group-hover:scale-110 transition-transform'}`} />
                     <div>
                       <p className="text-xs font-bold font-sans uppercase tracking-wider">Operador de Planta</p>
-                      <p className={`text-[10px] mt-1 leading-normal ${activeRole === 'practiker' ? 'text-teal-100' : 'text-slate-500'}`}>
+                      <p className={`text-[12px] mt-1 leading-normal ${activeRole === 'practiker' ? 'text-teal-100' : 'text-slate-500'}`}>
                         Mesa de cocina, loteo bajo norma HACCP y telemetría de hermeticidad.
                       </p>
                     </div>
@@ -2711,7 +2711,7 @@ export default function App() {
                     <Database className={`w-5 h-5 shrink-0 mt-0.5 ${activeRole === 'admin' ? 'text-white' : 'text-orange-600 group-hover:scale-110 transition-transform'}`} />
                     <div>
                       <p className="text-xs font-bold font-sans uppercase tracking-wider">Caja Central / SGC</p>
-                      <p className={`text-[10px] mt-1 leading-normal ${activeRole === 'admin' ? 'text-orange-100' : 'text-slate-500'}`}>
+                      <p className={`text-[12px] mt-1 leading-normal ${activeRole === 'admin' ? 'text-orange-100' : 'text-slate-500'}`}>
                         Métricas en vivo, control de pedidos, predicción artificial e inventarios.
                       </p>
                     </div>
@@ -2726,7 +2726,7 @@ export default function App() {
                     <h4 className="text-xs font-black text-practika uppercase tracking-widest flex items-center gap-1.5 font-bold">
                       🔑 2. Generador de Usuarios & Contraseñas
                     </h4>
-                    <p className="text-[11px] text-slate-500 mt-0.5">
+                    <p className="text-[13px] text-slate-500 mt-0.5">
                       Crea, examina o remueve las credenciales que otorgan acceso a los paneles. Se guardan localmente para este navegador (localStorage).
                     </p>
                   </div>
@@ -2736,7 +2736,7 @@ export default function App() {
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-inner">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
-                      <thead className="bg-slate-100 border-b border-slate-200 text-slate-650 uppercase font-black text-[9px] tracking-wider">
+                      <thead className="bg-slate-100 border-b border-slate-200 text-slate-650 uppercase font-black text-[11px] tracking-wider">
                         <tr>
                           <th className="px-4 py-2.5">Funcionario</th>
                           <th className="px-4 py-2.5">Rol de Sistema</th>
@@ -2750,7 +2750,7 @@ export default function App() {
                           <tr key={usr.username} className="hover:bg-slate-100/50 transition-all">
                             <td className="px-4 py-3 font-bold text-slate-900">{usr.name}</td>
                             <td className="px-4 py-3">
-                              <span className={`px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider ${
+                              <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-black uppercase tracking-wider ${
                                 usr.role === 'admin' 
                                   ? 'bg-orange-100 text-orange-900 border border-orange-200' 
                                   : 'bg-teal-50 text-teal border border-teal-200'
@@ -2772,7 +2772,7 @@ export default function App() {
                                   Eliminar
                                 </button>
                               ) : (
-                                <span className="text-[10px] text-slate-450 italic font-medium">Predeterminado</span>
+                                <span className="text-[12px] text-slate-450 italic font-medium">Predeterminado</span>
                               )}
                             </td>
                           </tr>
@@ -2784,13 +2784,13 @@ export default function App() {
 
                 {/* Form to generate new users dynamically */}
                 <div className="bg-slate-100/60 border border-slate-250 p-5 rounded-3xl space-y-4 shadow-sm">
-                  <p className="text-[10px] font-black text-slate-600 uppercase tracking-widest flex items-center gap-1.5">
+                  <p className="text-[12px] font-black text-slate-600 uppercase tracking-widest flex items-center gap-1.5">
                     ➕ Registrar Nuevo Personal Autorizado
                   </p>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[9px] font-black text-slate-450 uppercase tracking-wider mb-1">
+                      <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
                         Nombre Completo del Personal
                       </label>
                       <input
@@ -2802,7 +2802,7 @@ export default function App() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[9px] font-black text-slate-450 uppercase tracking-wider mb-1">
+                      <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
                         Rol / Permiso
                       </label>
                       <select
@@ -2818,7 +2818,7 @@ export default function App() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-[9px] font-black text-slate-450 uppercase tracking-wider mb-1">
+                      <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
                         Usuario de Logueo (Nick sin espacios)
                       </label>
                       <input
@@ -2830,7 +2830,7 @@ export default function App() {
                       />
                     </div>
                     <div>
-                      <label className="block text-[9px] font-black text-slate-450 uppercase tracking-wider mb-1">
+                      <label className="block text-[11px] font-black text-slate-450 uppercase tracking-wider mb-1">
                         Contraseña (Clave para ingresar)
                       </label>
                       <input
@@ -2866,7 +2866,7 @@ export default function App() {
                     window.location.reload();
                   }
                 }}
-                className="text-[10px] font-bold text-slate-450 hover:text-slate-600 underline"
+                className="text-[12px] font-bold text-slate-450 hover:text-slate-600 underline"
               >
                 Restaurar fábrica
               </button>
@@ -2900,7 +2900,7 @@ export default function App() {
                 </div>
                 <div>
                   <h4 className="font-extrabold text-sm leading-tight">Chef Álvaro Ibañez Peluffo</h4>
-                  <p className="text-[10px] text-[#A6E1E4] uppercase tracking-wider font-semibold">Taller Directivo PRACTIKA</p>
+                  <p className="text-[12px] text-[#A6E1E4] uppercase tracking-wider font-semibold">Taller Directivo PRACTIKA</p>
                 </div>
               </div>
               <button 
@@ -2946,13 +2946,13 @@ export default function App() {
                 <>
                   <button 
                     onClick={() => handlePredefinedQuickMsg("¿Cómo calibrar la campana al vacío para bases y salsas?")} 
-                    className="bg-white hover:bg-slate-50 border text-[10px] font-bold text-slate-600 px-3 py-1 rounded-full transition"
+                    className="bg-white hover:bg-slate-50 border text-[12px] font-bold text-slate-600 px-3 py-1 rounded-full transition"
                   >
                     Calibrar Campana
                   </button>
                   <button 
                     onClick={() => handlePredefinedQuickMsg("Protocolo de choque térmico para pollo en Sous-vide.")}
-                    className="bg-white hover:bg-slate-50 border text-[10px] font-bold text-slate-600 px-3 py-1 rounded-full transition"
+                    className="bg-white hover:bg-slate-50 border text-[12px] font-bold text-slate-600 px-3 py-1 rounded-full transition"
                   >
                     Choque Térmico
                   </button>
@@ -2961,13 +2961,13 @@ export default function App() {
                 <>
                   <button 
                     onClick={() => handlePredefinedQuickMsg("¿Cuánto tiempo dura la pasta de ajo al vacío en el freezer?")}
-                    className="bg-white hover:bg-slate-50 border text-[10px] font-bold text-slate-600 px-3 py-1 rounded-full transition"
+                    className="bg-white hover:bg-slate-50 border text-[12px] font-bold text-slate-600 px-3 py-1 rounded-full transition"
                   >
                     Duración al Vacío
                   </button>
                   <button 
                     onClick={() => handlePredefinedQuickMsg("Ideas de recetas rápidas usando la base criolla.")} 
-                    className="bg-white hover:bg-slate-50 border text-[10px] font-bold text-slate-600 px-3 py-1 rounded-full transition"
+                    className="bg-white hover:bg-slate-50 border text-[12px] font-bold text-slate-600 px-3 py-1 rounded-full transition"
                   >
                     Ideas Receta Criolla
                   </button>

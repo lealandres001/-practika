@@ -10,8 +10,15 @@
 }
 
 @layer base {
+  html {
+    /* Escala global ligeramente mayor: todo se ve más grande y legible */
+    font-size: 16.5px;
+  }
   body {
     @apply antialiased selection:bg-orange-100 selection:text-orange-950;
+    /* Fondo cálido y suave en lugar de plano */
+    background: linear-gradient(180deg, #fff8f3 0%, #fdf4ec 100%);
+    background-attachment: fixed;
   }
 }
 
@@ -81,4 +88,62 @@
 
 .animate-fade-in {
   animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ============================================================
+   PULIDO VISUAL — interfaz más bonita y fácil (paleta naranja intacta)
+   ============================================================ */
+
+/* Botones: sensación táctil y suave en toda la app */
+button {
+  transition: transform 0.15s ease, box-shadow 0.2s ease, background-color 0.2s ease, filter 0.2s ease;
+}
+button:not(:disabled):active {
+  transform: scale(0.97);
+}
+
+/* Foco accesible y bonito */
+*:focus-visible {
+  outline: 2px solid #F97316;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* Inputs y selects más amables al enfocar */
+input:focus, select:focus, textarea:focus {
+  box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.12);
+}
+
+/* Scrollbar elegante en tono naranja */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: #f5b58a;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #F97316;
+  background-clip: padding-box;
+}
+
+/* Tarjetas con elevación suave al pasar el mouse (clases comunes del proyecto) */
+.rounded-3xl, .rounded-\[2\.5rem\] {
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+/* Aparición suave global para los contenedores de cada vista */
+#app-workspace > div {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Imágenes siempre nítidas y redondeadas por defecto en tarjetas */
+img {
+  image-rendering: auto;
 }
