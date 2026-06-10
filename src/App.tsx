@@ -268,29 +268,24 @@ export default function App() {
   const handleFirstTimeSetup = async (e: FormEvent) => {
     e.preventDefault();
     setSetupError('');
-    const u = setupUsername.trim().toLowerCase();
     const p = setupPassword.trim();
-
-    if (!u || !p) {
-      setSetupError('El usuario de login y la contraseña son obligatorios.');
-      return;
-    }
 
     if (setupMode === 'register') {
       const n = setupName.trim();
       const em = setupEmail.trim();
-      const ph = setupPhone.trim();
 
-      if (!n || !em || !ph) {
-        setSetupError('Todos los campos son estrictamente obligatorios (Nombre, Usuario, Email, Teléfono y Contraseña).');
+      if (!n || !em || !p) {
+        setSetupError('Completa tu nombre, correo y contraseña.');
         return;
       }
+      // El usuario se genera automáticamente a partir del correo
+      const derivedUser = em.split('@')[0].toLowerCase().replace(/[^a-z0-9._-]/g, '') || ('user' + Date.now());
 
       try {
         const res = await fetch('/api/users/register-client', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: n, username: u, email: em, phone: ph, password: p })
+          body: JSON.stringify({ name: n, username: derivedUser, email: em, phone: '', password: p })
         });
         const data = await res.json();
         if (!res.ok) {
@@ -298,35 +293,33 @@ export default function App() {
           return;
         }
 
-        const clientData = {
-          name: n,
-          username: u,
-          email: em,
-          phone: ph
-        };
+        const clientData = { name: n, username: data.user?.username || derivedUser, email: em, phone: '' };
         setActiveClient(clientData);
         localStorage.setItem('active_client', JSON.stringify(clientData));
         localStorage.setItem('registered_client_backup', JSON.stringify(clientData));
-        showNotification(`🚀 ¡Registro exitoso! Bienvenido @${u}. Guardado en el servidor.`, 'success');
+        showNotification(`🚀 ¡Bienvenido a PRACTIKA, ${n}!`, 'success');
 
-        // Reset
         setSetupName('');
         setSetupUsername('');
         setSetupEmail('');
         setSetupPhone('');
         setSetupPassword('');
-        
         await checkSystemConfig();
       } catch (err: any) {
         setSetupError('Error al contactar al servidor: ' + err.message);
       }
     } else {
-      // Login Mode
+      // Login Mode — acepta correo o usuario
+      const ident = setupUsername.trim().toLowerCase();
+      if (!ident || !p) {
+        setSetupError('Ingresa tu correo (o usuario) y tu contraseña.');
+        return;
+      }
       try {
         const res = await fetch('/api/users/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: u, password: p })
+          body: JSON.stringify({ username: ident, password: p })
         });
         const data = await res.json();
         if (!res.ok) {
@@ -335,10 +328,10 @@ export default function App() {
         }
 
         const clientData = {
-          name: data.user.name || u,
-          username: u,
+          name: data.user.name || ident,
+          username: data.user.username || ident,
           email: data.user.email || 'cliente@practika.co',
-          phone: data.user.phone || '3120000000'
+          phone: data.user.phone || ''
         };
 
         setActiveClient(clientData);
@@ -939,32 +932,22 @@ export default function App() {
                     required
                   />
                 </div>
-
-                <div>
-                  <label className="field-label">Teléfono</label>
-                  <input
-                    type="tel"
-                    placeholder="315 894 1254"
-                    value={setupPhone}
-                    onChange={(e) => setSetupPhone(e.target.value.replace(/[^0-9]/g, ''))}
-                    className="field-xl"
-                    required
-                  />
-                </div>
               </>
             )}
 
-            <div>
-              <label className="field-label">Usuario</label>
-              <input
-                type="text"
-                placeholder="Ej. lealandres007"
-                value={setupUsername}
-                onChange={(e) => setSetupUsername(e.target.value.replace(/\s+/g, ''))}
-                className="field-xl"
-                required
-              />
-            </div>
+            {setupMode === 'login' && (
+              <div>
+                <label className="field-label">Correo o usuario</label>
+                <input
+                  type="text"
+                  placeholder="tucorreo@ejemplo.com"
+                  value={setupUsername}
+                  onChange={(e) => setSetupUsername(e.target.value.replace(/\s+/g, ''))}
+                  className="field-xl"
+                  required
+                />
+              </div>
+            )}
 
             <div>
               <label className="field-label">Contraseña</label>

@@ -656,26 +656,34 @@ async function startServer() {
   // Client dynamic registration API
   app.post('/api/users/register-client', (req, res) => {
     const { name, username, email, phone, password } = req.body;
-    const cleanUsername = username ? username.trim().toLowerCase() : '';
+    const cleanEmail = email ? email.trim() : '';
+    let cleanUsername = username ? username.trim().toLowerCase() : '';
+    // Si no envían usuario, se deriva del correo
+    if (!cleanUsername && cleanEmail) {
+      cleanUsername = cleanEmail.split('@')[0].toLowerCase().replace(/[^a-z0-9._-]/g, '');
+    }
 
-    if (!name || !cleanUsername || !email || !phone || !password) {
-      return res.status(400).json({ error: 'Todos los campos son estrictamente obligatorios: Nombre, Usuario, Email, Teléfono y Contraseña.' });
+    if (!name || !cleanEmail || !password) {
+      return res.status(400).json({ error: 'Faltan datos: nombre, correo y contraseña son obligatorios.' });
     }
 
     const existing = loadStoredUsers();
-    
-    // Check if the username already exists as an operator or another client
-    const isDuplicate = existing.some((u: any) => u.username === cleanUsername);
-    if (isDuplicate) {
-      return res.status(400).json({ error: 'El nombre de usuario ya está registrado, elija otro por favor.' });
+
+    // Si el usuario derivado ya existe, se le añade un sufijo único
+    if (existing.some((u: any) => u.username === cleanUsername)) {
+      cleanUsername = cleanUsername + Math.floor(10 + Math.random() * 90);
+    }
+    // Evita duplicar el correo
+    if (existing.some((u: any) => (u.email || '').toLowerCase() === cleanEmail.toLowerCase())) {
+      return res.status(400).json({ error: 'Ese correo ya está registrado. Inicia sesión.' });
     }
 
     const newClient = {
       username: cleanUsername,
       role: 'cliente',
       name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
+      email: cleanEmail,
+      phone: phone ? phone.trim() : '',
       password: password
     };
 
@@ -699,7 +707,9 @@ async function startServer() {
     const u = username ? username.trim().toLowerCase() : '';
     const existing = loadStoredUsers();
 
-    const matched = existing.find((usr: any) => usr.username === u && verifyPassword(password, usr.password));
+    const matched = existing.find((usr: any) =>
+      (usr.username === u || (usr.email || '').toLowerCase() === u) && verifyPassword(password, usr.password)
+    );
     if (matched) {
       // No exponer el hash de la contraseña al cliente
       const { password: _pw, ...safeUser } = matched;
