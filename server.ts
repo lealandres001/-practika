@@ -11,6 +11,7 @@ import fs from 'fs';
 import crypto from 'node:crypto';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI } from '@google/genai';
+import { OAuth2Client } from 'google-auth-library';
 import { 
   ProductItem, 
   SubscriptionPlan, 
@@ -716,6 +717,63 @@ async function startServer() {
       res.json({ success: true, user: safeUser });
     } else {
       res.status(401).json({ error: 'Usuario o contraseña incorrectos.' });
+    }
+  });
+
+  // --- LOGIN CON GOOGLE (OAuth) ---
+  const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+  const googleOAuth = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+  // Entrega configuración pública al frontend (Client ID de Google)
+  app.get('/api/config', (req, res) => {
+    res.json({ googleClientId: GOOGLE_CLIENT_ID });
+  });
+
+  // Verifica el token de Google y crea/inicia sesión del usuario
+  app.post('/api/auth/google', async (req, res) => {
+    const { credential } = req.body;
+    if (!credential) {
+      return res.status(400).json({ error: 'Falta el token de Google.' });
+    }
+    if (!GOOGLE_CLIENT_ID) {
+      return res.status(500).json({ error: 'El servidor no tiene configurado GOOGLE_CLIENT_ID.' });
+    }
+    try {
+      const ticket = await googleOAuth.verifyIdToken({ idToken: credential, audience: GOOGLE_CLIENT_ID });
+      const payload = ticket.getPayload();
+      if (!payload || !payload.email) {
+        return res.status(401).json({ error: 'No se pudo leer el correo de Google.' });
+      }
+      const email = payload.email;
+      const name = payload.name || email.split('@')[0];
+
+      const users = loadStoredUsers();
+      let user = users.find((u: any) => (u.email || '').toLowerCase() === email.toLowerCase());
+
+      if (!user) {
+        // Crea el cliente automáticamente con una contraseña aleatoria (no se usa para Google)
+        let username = email.split('@')[0].toLowerCase().replace(/[^a-z0-9._-]/g, '');
+        if (users.some((u: any) => u.username === username)) {
+          username = username + Math.floor(10 + Math.random() * 90);
+        }
+        user = {
+          username,
+          role: 'cliente',
+          name,
+          email,
+          phone: '',
+          password: crypto.randomBytes(24).toString('hex'),
+          provider: 'google'
+        };
+        users.push(user);
+        saveStoredUsers(users);
+      }
+
+      const { password: _pw, ...safeUser } = user;
+      res.json({ success: true, user: safeUser });
+    } catch (err: any) {
+      console.error('Error verificando token de Google:', err);
+      res.status(401).json({ error: 'No se pudo verificar el inicio con Google.' });
     }
   });
 

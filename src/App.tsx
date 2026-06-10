@@ -360,6 +360,64 @@ export default function App() {
     }
   };
 
+  // --- LOGIN CON GOOGLE (Google Identity Services) ---
+  const handleGoogleCredential = async (response: any) => {
+    try {
+      const res = await fetch('/api/auth/google', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential: response.credential })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showNotification(data.error || 'No se pudo iniciar con Google.', 'warn');
+        return;
+      }
+      const clientData = {
+        name: data.user.name || 'Cliente',
+        username: data.user.username,
+        email: data.user.email,
+        phone: data.user.phone || ''
+      };
+      setActiveClient(clientData);
+      localStorage.setItem('active_client', JSON.stringify(clientData));
+      localStorage.setItem('registered_client_backup', JSON.stringify(clientData));
+      if (data.user.role === 'admin') {
+        setActiveRole('admin'); setIsAdminLogged(true); localStorage.setItem('isAdminLogged', 'true');
+      } else if (data.user.role === 'practiker') {
+        setActiveRole('practiker'); setIsPractikerLogged(true); localStorage.setItem('isPractikerLogged', 'true');
+      } else {
+        setActiveRole('cliente');
+      }
+      showNotification(`👋 ¡Bienvenido, ${clientData.name}!`, 'success');
+    } catch (err: any) {
+      showNotification('Error al iniciar con Google: ' + err.message, 'warn');
+    }
+  };
+
+  // Inicializa y renderiza el botón oficial de Google en la pantalla de acceso
+  useEffect(() => {
+    if (activeClient !== null) return;
+    let cancelled = false;
+    const tryInit = async () => {
+      try {
+        const cfg = await fetch('/api/config').then(r => r.json());
+        const clientId = cfg.googleClientId;
+        const g = (window as any).google;
+        const el = document.getElementById('google-signin-btn');
+        if (!clientId || !g || !g.accounts || !el || cancelled) return;
+        g.accounts.id.initialize({ client_id: clientId, callback: handleGoogleCredential });
+        el.innerHTML = '';
+        g.accounts.id.renderButton(el, {
+          theme: 'outline', size: 'large', width: 320,
+          text: 'continue_with', shape: 'pill', locale: 'es'
+        });
+      } catch (e) { /* silencioso */ }
+    };
+    const t = setTimeout(tryInit, 500);
+    return () => { cancelled = true; clearTimeout(t); };
+  }, [activeClient, setupMode]);
+
   const registerOrUpdateUser = async (username: string, role: 'practiker' | 'admin', name: string, pass: string) => {
     const u = username.trim().toLowerCase();
     if (!u || !pass || !name) {
@@ -973,23 +1031,9 @@ export default function App() {
             <span className="text-[12px] font-bold text-[#a8a29e]">o continúa con</span>
             <div className="h-px bg-[#e7e5e4] flex-1"></div>
           </div>
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              { id: 'Google', label: 'G' },
-              { id: 'Apple', label: '' },
-              { id: 'Facebook', label: 'f' },
-            ].map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => showNotification(`Inicio con ${p.id}: disponible muy pronto.`, 'info')}
-                className="h-12 rounded-2xl border border-[#e7e5e4] bg-white hover:border-[#16140f] flex items-center justify-center text-xl font-black transition cursor-pointer"
-                aria-label={`Continuar con ${p.id}`}
-              >
-                {p.label}
-              </button>
-            ))}
-          </div>
+          {/* Botón oficial "Continuar con Google" (se renderiza aquí) */}
+          <div id="google-signin-btn" className="flex justify-center items-center min-h-[44px]"></div>
+          <p className="text-center text-[12px] text-[#a8a29e] mt-3">Apple y Facebook: muy pronto</p>
 
           {/* Acceso de personal autorizado (discreto) */}
           <div className="mt-7 pt-5 border-t border-[#f4f4f5] flex items-center justify-center gap-5">

@@ -16,3 +16,6 @@ services:
       # API key de Gemini (opcional). Sin ella, la IA usa respuestas simuladas.
       - key: GEMINI_API_KEY
         sync: false
+      # Client ID público de Google para "Iniciar con Google"
+      - key: GOOGLE_CLIENT_ID
+        value: "698169277279-32fjbl760snfsthl7ssvdf6se5rff3s3.apps.googleusercontent.com"
